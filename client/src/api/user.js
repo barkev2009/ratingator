@@ -1,8 +1,8 @@
 import { jwtDecode } from 'jwt-decode';
 import { $authHost, $host } from '../web';
 
-export const register = async (name, login, password) => {
-    const { data } = await $host.post('api/user/register', { name, login, password });
+export const register = async (login, password) => {
+    const { data } = await $host.post('api/user/register', { login, password });
     localStorage.setItem(process.env.REACT_APP_LOCAL_STORAGE_KEY, data.token);
     return jwtDecode(data.token);
 }

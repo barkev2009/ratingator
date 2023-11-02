@@ -10,9 +10,8 @@ const Auth = () => {
 
     const [login, setLogin] = useState('');
     const [password, setPassword] = useState('');
-    const [name, setName] = useState('');
     const [error, setError] = useState(null);
-    const [passVisible, setPassVisible] = useState(false);
+    const [passVisible, _] = useState(false);
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -25,7 +24,7 @@ const Auth = () => {
             if (isLogin) {
                 user = await loginAPI(login, password);
             } else {
-                user = await register(name, login, password);
+                user = await register(login, password);
             }
             dispatch(setUser(user));
             dispatch(setIsAuth(true));
@@ -42,11 +41,6 @@ const Auth = () => {
             <div className={styles.auth_container}>
                 {error && <div className={styles['alert-danger']} >{`Ошибка: ${error}`}</div>}
                 <h2>{isLogin ? 'Авторизация' : 'Регистрация'}</h2>
-                {
-                    !isLogin && <div className={styles['form-group']}>
-                        <input type="text" placeholder='Введите имя...' className="form-control mt-4" id="name_input" onChange={e => setName(e.target.value)} value={name} />
-                    </div>
-                }
                 <div className={styles['form-group']}>
                     <input type="text" placeholder='Введите логин...' className="form-control mt-4" id="login_input" onChange={e => setLogin(e.target.value)} value={login} />
                 </div>
