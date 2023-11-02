@@ -4,6 +4,7 @@ const express = require('express');
 const cors = require('cors');
 const path = require('path');
 const fileUpload = require('express-fileupload');
+const models = require('./models/models')
 
 const router = require('./routers/index');
 const errorHandler = require('./middleware/ErrorHandlerMiddleware');
