@@ -15,9 +15,10 @@ const Items = () => {
     const location = useLocation();
     const dispatch = useDispatch();
     const collectionId = location.pathname.split('/')[2];
-    const items = useSelector(state => state.items.data);
+    const initialItems = useSelector(state => state.items.data);
     const userId = useSelector(state => state.user.user.id);
     const [name, setName] = useState('');
+    const [items, setItems] = useState(initialItems);
 
     const clickHandler = () => {
         if (name !== '') {
@@ -29,6 +30,9 @@ const Items = () => {
         e.preventDefault();
         clickHandler();
     }
+    const inputHandler = (e) => {
+        setName(e.target.value);
+    }
 
     useEffect(
         () => {
@@ -37,13 +41,27 @@ const Items = () => {
             }
         }, []
     );
+    useEffect(
+        () => {
+            setItems(initialItems);
+        }, [initialItems]
+    );
+    useEffect(
+        () => {
+            if (name.length >= 3) {
+                setItems(initialItems.filter(item => item.name.toLowerCase().includes(name.toLowerCase())));
+            } else {
+                setItems(initialItems);
+            }
+        }, [name]
+    );
 
     return (
         <div>
             <BackButton route={COLLECTIONS_ROUTE.replace(':id', userId)} />
             <form onSubmit={sumbitHandler} className={styles.inputContainer}>
                 <button onClick={clickHandler}>CREATE</button>
-                <input value={name} onChange={e => setName(e.target.value)} />
+                <input value={name} onChange={inputHandler} />
             </form>
             <div className={styles.itemsContainer}>
                 {
