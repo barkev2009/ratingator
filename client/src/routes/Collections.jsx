@@ -1,10 +1,10 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { useSetCookie } from '../hooks';
-import { createCollection, deleteCollection, getCollections } from '../slices/collections';
+import { createCollection, getCollections } from '../slices/collections';
 import { getCookie } from '../utils/cookies';
 import { useEffect, useState } from 'react';
 import Collection from '../components/Collection';
-import BackButton from '../components/BackButton';
+import BackButton from '../common/BackButton';
 import { MAIN_ROUTE } from '../constants';
 import styles from '../css/Collections.module.css';
 
@@ -44,11 +44,13 @@ const Collections = () => {
                 <button onClick={clickHandler}>CREATE</button>
                 <input value={name} onChange={e => setName(e.target.value)} />
             </form>
-            {
-                collections.map(
-                    item => <Collection key={item.id} collection={item} />
-                )
-            }
+            <div className={styles.collectionsContainer}>
+                {
+                    collections.map(
+                        item => <Collection key={item.id} collection={item} />
+                    )
+                }
+            </div>
         </div>
     )
 }

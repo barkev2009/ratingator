@@ -1,5 +1,12 @@
 .collectionType {
-    border: 5px solid gray;
     text-transform: capitalize;
     cursor: pointer;
+    margin-bottom: 10px;
+    border: 1px solid black;
+    border-radius: 10px;
+    width: 80%;
+    height: 50px;
+    align-items: center;
+    padding: 5px;
+    flex-shrink: 0;
 }

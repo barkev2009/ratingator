@@ -1,5 +1,25 @@
-.itemContainer {
+.itemContainer, .choiceButtons {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+}
+
+.itemContainer {
+    margin-bottom: 10px;
+    border: 1px solid black;
+    border-radius: 10px;
+    width: 80%;
+    height: 50px;
+    align-items: center;
+    padding: 5px;
+    flex-shrink: 0;
+}
+
+.itemName {
+    cursor: pointer;
+}
+
+.trashContainer {
+    width: 30px;
+    cursor: pointer;
 }

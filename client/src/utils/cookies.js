@@ -1,6 +1,3 @@
-const { useEffect } = require("react");
-const { useLocation } = require("react-router-dom");
-
 export function setCookie(name, value, options = {}) {
 
   let date = new Date(Date.now() + 86400e3 * 30);

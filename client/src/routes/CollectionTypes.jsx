@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getAllCollectionTypes } from '../slices/collectionType';
 import CollectionType from '../components/CollectionType';
 import { useSetCookie } from '../hooks';
-import BackButton from '../components/BackButton';
+import BackButton from '../common/BackButton';
 import { AUTH_ROUTE } from '../constants';
 
 const CollectionTypes = () => {

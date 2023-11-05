@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useSetCookie } from '../hooks'
-import BackButton from '../components/BackButton';
+import BackButton from '../common/BackButton';
 import { useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { createItem, getItems } from '../slices/items';
@@ -45,9 +45,11 @@ const Items = () => {
                 <button onClick={clickHandler}>CREATE</button>
                 <input value={name} onChange={e => setName(e.target.value)} />
             </form>
-            {
-                items.map(item => <Item key={item.id} item={item} />)
-            }
+            <div className={styles.itemsContainer}>
+                {
+                    items.map(item => <Item key={item.id} item={item} />)
+                }
+            </div>
         </div>
     )
 }
