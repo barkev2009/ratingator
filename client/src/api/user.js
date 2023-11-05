@@ -1,6 +1,6 @@
 import { jwtDecode } from 'jwt-decode';
 import { $authHost, $host } from '../web';
-import setCookie from '../utils/cookies';
+import { setCookie } from '../utils/cookies';
 
 export const register = async (login, password) => {
     const { data } = await $host.post('api/user/register', { login, password });
