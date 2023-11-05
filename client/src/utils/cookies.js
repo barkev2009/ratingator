@@ -1,7 +1,7 @@
 const { useEffect } = require("react");
 const { useLocation } = require("react-router-dom");
 
-const setCookie = (name, value, options = {}) => {
+export function setCookie(name, value, options = {}) {
 
   let date = new Date(Date.now() + 86400e3 * 30);
   options = {
@@ -27,13 +27,9 @@ const setCookie = (name, value, options = {}) => {
   document.cookie = updatedCookie;
 }
 
-const getCookie = (name) => {
+export function getCookie(name) {
   let matches = document.cookie.match(new RegExp(
     "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
   ));
   return matches ? decodeURIComponent(matches[1]) : undefined;
 }
-
-module.exports = {
-  setCookie, getCookie
-} 
