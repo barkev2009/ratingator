@@ -6,7 +6,6 @@ module.exports = function (req, resp, next) {
     }
     try {
         const token = req.headers.authorization.split(' ')[1] // Bearer TOKEN
-        console.log(!token);
         if (!token) {
             return resp.status(401).json(
                 {

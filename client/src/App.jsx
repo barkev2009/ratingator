@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import './css/App.css';
 import { BrowserRouter } from 'react-router-dom';
 import AppRouter from './routes/AppRouter';
@@ -16,6 +16,10 @@ function App() {
         user => {
           dispatch(setUser(user));
           dispatch(setIsAuth(true));
+        }
+      ).catch(
+        error => {
+          dispatch(setIsAuth(false));
         }
       );
     }, [dispatch]

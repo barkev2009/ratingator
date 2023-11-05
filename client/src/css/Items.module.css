@@ -1,0 +1,15 @@
+.itemsContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.inputContainer {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 10px;
+}
+
+.inputContainer input {
+    margin-left: 20px;
+}

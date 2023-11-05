@@ -48,7 +48,7 @@ const Item = sequelize.define(
     'item',
     {
         id: {type: DataTypes.UUID, primaryKey: true, unique: true, allowNull: false, defaultValue: Sequelize.literal('uuid_in((md5((random())::text))::cstring)')},
-        name: {type: DataTypes.STRING, unique: true, allowNull: false},
+        name: {type: DataTypes.STRING, allowNull: false},
         avatar_path: {type: DataTypes.STRING},
         rating: {type: DataTypes.FLOAT},
         order_number: {type: DataTypes.INTEGER}
