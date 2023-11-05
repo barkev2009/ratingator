@@ -6,6 +6,7 @@ import { COLLECTION_ROUTE } from '../constants';
 import styles from '../css/Collection.module.css';
 import Modal from '../common/Modal';
 import Trash from '../svg/Trash';
+import { setCookie } from '../utils/cookies';
 
 const Collection = ({ collection }) => {
 
@@ -19,6 +20,7 @@ const Collection = ({ collection }) => {
   }
   const clickHandler = () => {
     navigate(COLLECTION_ROUTE.replace(':id', collection.id));
+    setCookie('openVK', collection.name.toLowerCase() === 'pornstars');
   }
 
   return (

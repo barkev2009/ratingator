@@ -7,6 +7,7 @@ import { createItem, getItems } from '../slices/items';
 import Item from '../components/Item';
 import { COLLECTIONS_ROUTE } from '../constants';
 import styles from '../css/Items.module.css';
+import { getCookie } from '../utils/cookies';
 
 const Items = () => {
 
@@ -20,6 +21,7 @@ const Items = () => {
     const [name, setName] = useState('');
     const [counter, setCounter] = useState(initialItems.length);
     const [items, setItems] = useState(initialItems);
+    const [openVK, setOpenVK] = useState(false);
 
     const clickHandler = () => {
         if (name !== '') {
@@ -68,7 +70,7 @@ const Items = () => {
             </form>
             <div className={styles.itemsContainer}>
                 {
-                    items.map(item => <Item key={item.id} item={item} />)
+                    items.map(item => <Item key={item.id} item={item} openVK={getCookie('openVK') === 'true'}/>)
                 }
             </div>
         </div>

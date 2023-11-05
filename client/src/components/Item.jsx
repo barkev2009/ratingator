@@ -5,7 +5,7 @@ import styles from '../css/Item.module.css';
 import Modal from '../common/Modal';
 import Trash from '../svg/Trash';
 
-const Item = ({ item }) => {
+const Item = ({ item, openVK }) => {
 
   const dispatch = useDispatch();
   const [active, setActive] = useState(false);
@@ -13,10 +13,16 @@ const Item = ({ item }) => {
   const deleteHandler = () => {
     dispatch(deleteItem({ id: item.id }))
   }
+  const hrefHandler = () => {
+    if (openVK) {
+      const q = item.name.replace(' ', '%20');
+      window.open(`https://vk.com/video?q=${q}`, '_blank', 'rel=noopener noreferrer');
+    }
+  }
 
   return (
     <div className={styles.itemContainer}>
-      <div className={styles.itemName}><b>{`${item.name}`}</b></div>
+      <div onClick={hrefHandler} className={styles.itemName}><b>{`${item.name}`}</b></div>
       <div className={styles.trashContainer} onClick={() => setActive(true)}>
         <Trash />
       </div>
