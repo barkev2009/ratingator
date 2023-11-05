@@ -16,7 +16,7 @@ const Item = ({ item, openVK }) => {
   const hrefHandler = () => {
     if (openVK) {
       const q = item.name.replace(' ', '%20');
-      window.open(`https://vk.com/video?q=${q}`, '_blank', 'rel=noopener noreferrer');
+      window.open(`https://vk.com/video?notsafe=1&q=${q}`, '_blank', 'rel=noopener noreferrer');
     }
   }
 
