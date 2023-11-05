@@ -18,6 +18,7 @@ const Items = () => {
     const initialItems = useSelector(state => state.items.data);
     const userId = useSelector(state => state.user.user.id);
     const [name, setName] = useState('');
+    const [counter, setCounter] = useState(initialItems.length);
     const [items, setItems] = useState(initialItems);
 
     const clickHandler = () => {
@@ -44,6 +45,7 @@ const Items = () => {
     useEffect(
         () => {
             setItems(initialItems);
+            setCounter(initialItems.length);
         }, [initialItems]
     );
     useEffect(
@@ -62,6 +64,7 @@ const Items = () => {
             <form onSubmit={sumbitHandler} className={styles.inputContainer}>
                 <button onClick={clickHandler}>CREATE</button>
                 <input value={name} onChange={inputHandler} />
+                <div style={{marginLeft: '10px'}}>{`Пунктов: ${counter}`}</div>
             </form>
             <div className={styles.itemsContainer}>
                 {
