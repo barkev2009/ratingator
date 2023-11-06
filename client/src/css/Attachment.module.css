@@ -4,6 +4,7 @@
     border-radius: 7px;
     cursor: pointer;
     margin: 0 2px;
+    object-fit: cover;
 }
 
 .imgContainer {
