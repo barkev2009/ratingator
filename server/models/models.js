@@ -40,7 +40,7 @@ const Attachment = sequelize.define(
     'attachment',
     {
         id: {type: DataTypes.UUID, primaryKey: true, unique: true, allowNull: false, defaultValue: Sequelize.literal('uuid_in((md5((random())::text))::cstring)')},
-        path: {type: DataTypes.STRING, allowNull: false}
+        path: {type: DataTypes.STRING(400), allowNull: false}
     }
 )
 
