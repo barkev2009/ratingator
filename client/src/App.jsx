@@ -4,7 +4,7 @@ import { BrowserRouter } from 'react-router-dom';
 import AppRouter from './routes/AppRouter';
 import { useDispatch } from 'react-redux';
 import { check } from './api/user';
-import { setIsAuth, setUser } from './slices/user';
+import { setIsAuth, setUser } from './reducers/user';
 
 function App() {
 

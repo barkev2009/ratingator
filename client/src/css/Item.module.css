@@ -23,3 +23,30 @@
     width: 30px;
     cursor: pointer;
 }
+
+.attachmentsContainer {
+    margin-right: 10px;
+    display: flex;
+    flex-direction: row;
+    overflow-x: scroll;
+    max-width: 40vw;
+}
+
+.addAttachment {
+    border: 1px solid black;
+    border-radius: 7px;
+    min-width: 40px;
+    min-height: 33px;
+    position: relative;
+    cursor: pointer;
+    margin: 0 5px;
+}
+
+.addAttachment::after {
+    content: '+';
+    position: absolute;
+    font-weight: 700;
+    font-size: 34px;
+    left: 20%;
+    top: -35%;
+}

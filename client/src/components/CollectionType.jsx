@@ -3,7 +3,7 @@ import styles from '../css/CollectionType.module.css';
 import { useNavigate } from 'react-router-dom';
 import { COLLECTIONS_ROUTE } from '../constants';
 import { useDispatch, useSelector } from 'react-redux';
-import { setCurType } from '../slices/collections';
+import { setCurType } from '../reducers/collections';
 
 const CollectionType = ({ collectionType }) => {
 

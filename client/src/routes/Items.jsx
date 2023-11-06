@@ -3,11 +3,12 @@ import { useSetCookie } from '../hooks'
 import BackButton from '../common/BackButton';
 import { useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { createItem, getItems } from '../slices/items';
+import { createItem, getItems } from '../reducers/items';
 import Item from '../components/Item';
 import { COLLECTIONS_ROUTE } from '../constants';
 import styles from '../css/Items.module.css';
 import { getCookie } from '../utils/cookies';
+import { getAttachments } from '../reducers/attachments';
 
 const Items = () => {
 
@@ -21,7 +22,6 @@ const Items = () => {
     const [name, setName] = useState('');
     const [counter, setCounter] = useState(initialItems.length);
     const [items, setItems] = useState(initialItems);
-    const [openVK, setOpenVK] = useState(false);
 
     const clickHandler = () => {
         if (name !== '') {
@@ -59,6 +59,11 @@ const Items = () => {
             }
         }, [name]
     );
+    useEffect(
+        () => {
+          dispatch(getAttachments({ collectionId }));
+        }, [collectionId]
+      );
 
     return (
         <div>

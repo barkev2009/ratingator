@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { AUTH_ROUTE, MAIN_ROUTE, REGISTER_ROUTE } from '../constants';
 import { loginAPI, register } from '../api/user';
-import { setIsAuth, setUser } from '../slices/user';
+import { setIsAuth, setUser } from '../reducers/user';
 import styles from '../css/Auth.module.css';
 import { getCookie } from '../utils/cookies';
 

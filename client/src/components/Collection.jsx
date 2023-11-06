@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { deleteCollection } from '../slices/collections';
+import { deleteCollection } from '../reducers/collections';
 import { useNavigate } from 'react-router-dom';
 import { COLLECTION_ROUTE } from '../constants';
 import styles from '../css/Collection.module.css';

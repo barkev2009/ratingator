@@ -75,8 +75,6 @@ class CollectionController {
                         }
                     )
                 }
-                const collection = await Collection.findOne({ where: { id } });
-                return res.json(collection);
             }, req, res, next, 'CollectionController.delete'
         )
     }

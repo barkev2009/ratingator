@@ -1,9 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit';
 
-import userReducer from '../slices/user';
-import collectionTypeReducer from '../slices/collectionType';
-import collectionReducer from '../slices/collections';
-import itemReducer from '../slices/items';
+import userReducer from '../reducers/user';
+import collectionTypeReducer from '../reducers/collectionType';
+import collectionReducer from '../reducers/collections';
+import itemReducer from '../reducers/items';
+import attachmentReducer from '../reducers/attachments';
 
 export const store = configureStore(
     {
@@ -11,7 +12,8 @@ export const store = configureStore(
             user: userReducer,
             collectionType: collectionTypeReducer,
             collections: collectionReducer,
-            items: itemReducer
+            items: itemReducer,
+            attachments: attachmentReducer
         }
     }
 )

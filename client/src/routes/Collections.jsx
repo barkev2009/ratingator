@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { useSetCookie } from '../hooks';
-import { createCollection, getCollections } from '../slices/collections';
+import { createCollection, getCollections } from '../reducers/collections';
 import { getCookie } from '../utils/cookies';
 import { useEffect, useState } from 'react';
 import Collection from '../components/Collection';
@@ -18,15 +18,12 @@ const Collections = () => {
     const collectionTypeId = getCookie('curType');
     const [name, setName] = useState('');
 
-    const clickHandler = () => {
+    const sumbitHandler = (e) => {
+        e.preventDefault();
         if (name !== '') {
             dispatch(createCollection({ name, collectionTypeId, userId }));
             setName('');
         }
-    }
-    const sumbitHandler = (e) => {
-        e.preventDefault();
-        clickHandler();
     }
 
     useEffect(
@@ -41,7 +38,7 @@ const Collections = () => {
         <div>
             <BackButton route={MAIN_ROUTE.replace(':id', userId)} />
             <form onSubmit={sumbitHandler} className={styles.inputContainer}>
-                <button onClick={clickHandler}>CREATE</button>
+                <button type='submit'>CREATE</button>
                 <input value={name} onChange={e => setName(e.target.value)} />
             </form>
             <div className={styles.collectionsContainer}>
