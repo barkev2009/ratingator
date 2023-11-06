@@ -3,6 +3,7 @@ import styles from '../css/Item.module.css';
 import Modal from '../common/Modal';
 import { useDispatch } from 'react-redux';
 import { createAttachment } from '../reducers/attachments';
+import Plus from '../svg/Plus';
 
 const AddAttachment = ({ itemId }) => {
 
@@ -22,6 +23,7 @@ const AddAttachment = ({ itemId }) => {
     return (
         <>
             <div onClick={() => setActive(true)} className={styles.addAttachment}>
+                <Plus />
             </div>
             <Modal active={active} setActive={setActive}>
                 <form onSubmit={submitHandler}>
