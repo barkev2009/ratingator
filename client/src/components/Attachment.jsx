@@ -16,7 +16,7 @@ const Attachment = ({ attachment }) => {
     }
 
     return (
-        <div>
+        <div style={{display: 'flex'}}>
             <img onClick={() => setActive(true)} className={styles.thumbnail} src={attachment.path} alt={attachment.id} />
             <Modal active={active} setActive={setActive}>
                 <div className={styles.imgContainer} onClick={deleteHandler}>
