@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { deleteItem } from '../reducers/items';
 import styles from '../css/Item.module.css';
@@ -11,7 +11,6 @@ const Item = ({ item, openVK }) => {
 
   const dispatch = useDispatch();
   const [active, setActive] = useState(false);
-  const [activeCreate, setActiveCreate] = useState(false);
   const attachments = useSelector(state => state.attachments.data);
 
   const deleteHandler = () => {
@@ -40,7 +39,7 @@ const Item = ({ item, openVK }) => {
           <Trash />
         </div>
       </div>
-      <Modal active={activeCreate} setActive={setActiveCreate}>
+      <Modal active={active} setActive={setActive}>
         <h3>Точно удалить пункт коллекции?</h3>
         <div className={styles.choiceButtons}>
           <div onClick={deleteHandler}>Да</div>
