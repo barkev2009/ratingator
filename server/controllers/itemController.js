@@ -1,4 +1,4 @@
-const { Item, Collection } = require('../models/models');
+const { Item, Collection, Attachment } = require('../models/models');
 const ApiError = require('../error/ApiError');
 const tryCatchWrapper = require('../utils/tryCatchWrapper');
 
@@ -48,13 +48,17 @@ class ItemController {
             async () => {
                 const { id } = req.params;
                 if (id) {
-                    const item = await Item.findOne({ where: { id } });
 
+                    const attachments = await Attachment.findAll({ where: { itemId: id } });
+                    await Attachment.destroy({ where: { itemId: id } });
+
+                    const item = await Item.findOne({ where: { id } });
                     await Item.destroy({ where: { id } });
                     return res.json(
                         {
                             item,
-                            result: 1
+                            result: 1,
+                            attachmentsDeleted: attachments.length
                         }
                     )
                 }
