@@ -77,7 +77,10 @@ Item.hasMany(Attachment);
 Tag.belongsToMany(Item, {through: TagItem});
 Item.belongsToMany(Tag, {through: TagItem});
 
+Tag.belongsTo(Collection);
+Collection.hasMany(Tag);
+
 
 module.exports = {
-    User, Collection, CollectionType, Item, Attachment, Tag
+    User, Collection, CollectionType, Item, Attachment, Tag, TagItem
 };

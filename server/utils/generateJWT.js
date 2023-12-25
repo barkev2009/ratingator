@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 
 module.exports =  function (id, login, role) {
-    let expiresIn = '24h';
+    let expiresIn = '7d';
     // if (role === 'ADMIN') {
     //     expiresIn = '1h';
     // }

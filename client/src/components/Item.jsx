@@ -6,6 +6,7 @@ import Modal from '../common/Modal';
 import Trash from '../svg/Trash';
 import Attachment from './Attachment';
 import AddAttachment from './AddAttachment';
+import Rating from './Rating';
 
 const Item = ({ item, openVK }) => {
 
@@ -38,6 +39,7 @@ const Item = ({ item, openVK }) => {
         <div className={styles.trashContainer} onClick={() => setActive(true)}>
           <Trash />
         </div>
+        <Rating item={item} />
       </div>
       <Modal active={active} setActive={setActive}>
         <h3>Точно удалить пункт коллекции?</h3>

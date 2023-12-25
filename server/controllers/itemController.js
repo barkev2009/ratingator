@@ -16,7 +16,7 @@ class ItemController {
                     return next(ApiError.badRequest({ function: 'ItemController.create', message: `Коллекция с ID ${collectionId} не найдена` }));
                 }
 
-                const item = await Item.create({ name, collectionId });
+                const item = await Item.create({ name, collectionId, rating: 0 });
                 return res.json(item);
             }, req, res, next, 'ItemController.create'
         )

@@ -1,0 +1,12 @@
+.ratingControl {
+    width: 50px;
+    text-align: center;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.ratingValue {
+    font-size: 20px;
+    font-weight: 700;
+    text-align: center;
+}

@@ -3,7 +3,7 @@ import { useSetCookie } from '../hooks'
 import BackButton from '../common/BackButton';
 import { useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { createItem, getItems } from '../reducers/items';
+import { createItem, getItems, sortByRating } from '../reducers/items';
 import Item from '../components/Item';
 import { COLLECTIONS_ROUTE } from '../constants';
 import styles from '../css/Items.module.css';
@@ -22,6 +22,7 @@ const Items = () => {
     const [name, setName] = useState('');
     const [counter, setCounter] = useState(initialItems.length);
     const [items, setItems] = useState(initialItems);
+    const [sortedByRating, setSortedByRating] = useState(getCookie('itemsRatingSort') || 'false');
 
     const clickHandler = () => {
         if (name !== '') {
@@ -35,6 +36,10 @@ const Items = () => {
     }
     const inputHandler = (e) => {
         setName(e.target.value);
+    }
+    const toggleRatingSort = () => {
+        dispatch(sortByRating(sortedByRating === 'true' ? 'false': 'true'));
+        setSortedByRating(sortedByRating === 'true' ? 'false': 'true');
     }
 
     useEffect(
@@ -61,9 +66,9 @@ const Items = () => {
     );
     useEffect(
         () => {
-          dispatch(getAttachments({ collectionId }));
+            dispatch(getAttachments({ collectionId }));
         }, [collectionId]
-      );
+    );
 
     return (
         <div>
@@ -71,11 +76,12 @@ const Items = () => {
             <form onSubmit={sumbitHandler} className={styles.inputContainer}>
                 <button onClick={clickHandler}>CREATE</button>
                 <input value={name} onChange={inputHandler} />
-                <div style={{marginLeft: '10px'}}>{`Пунктов: ${counter}`}</div>
+                <div style={{ marginLeft: '10px', top: '7px', position: 'relative' }}>{`Пунктов: ${counter}`}</div>
+                <div className={styles.ratingSort} style={{ borderColor: sortedByRating === 'true' ? 'green' : 'red' }} onClick={toggleRatingSort}>Sort by rating</div>
             </form>
             <div className={styles.itemsContainer}>
                 {
-                    items.map(item => <Item key={item.id} item={item} openVK={getCookie('openVK') === 'true'}/>)
+                    items.map(item => <Item key={item.id} item={item} openVK={getCookie('openVK') === 'true'} />)
                 }
             </div>
         </div>
