@@ -24,7 +24,8 @@ const Tag = sequelize.define(
     'tag',
     {
         id: {type: DataTypes.UUID, primaryKey: true, unique: true, allowNull: false, defaultValue: Sequelize.literal('uuid_in((md5((random())::text))::cstring)')},
-        name: {type: DataTypes.STRING, unique: true, allowNull: false}
+        name: {type: DataTypes.STRING, unique: true, allowNull: false},
+        color: {type: DataTypes.STRING, unique: false, allowNull: false}
     }
 )
 

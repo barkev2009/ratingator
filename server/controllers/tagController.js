@@ -8,11 +8,17 @@ class TagController {
         tryCatchWrapper(
             async () => {
                 const { name, collectionId } = req.body;
+                const colors = [
+                    'crimson', 'chocolate', 'blueviolet',
+                    'darkgoldenrod', 'darkgreen', 'darkmagenta', 'darkorchid',
+                    'firebrick', 'indigo', 'midnightblue', 'olive',
+                    'palevioletred', 'seagreen', 'steelblue', 'tomato'
+                ];
                 if (!collectionId) {
                     return next(ApiError.badRequest({ function: 'TagController.create', message: `Неверные параметры: collectionId - ${collectionId}` }));
                 }
 
-                const tag = await Tag.create({ name, collectionId });
+                const tag = await Tag.create({ name, collectionId, color: colors[Math.floor(Math.random() * colors.length)] });
                 return res.json(tag);
             }, req, res, next, 'TagController.create'
         )
@@ -36,12 +42,27 @@ class TagController {
                 if (!tag) {
                     return next(ApiError.badRequest({ function: 'TagController.set', message: `Не существует tag c ID ${tagId}` }));
                 }
-                const item = Item.findOne({ where: { id: itemId } });
+                let item = Item.findOne({ where: { id: itemId } });
                 if (!item) {
                     return next(ApiError.badRequest({ function: 'TagController.set', message: `Не существует item c ID ${itemId}` }));
                 }
-                const tagItem = await TagItem.create({ tagId, itemId });
-                return res.json(tagItem);
+                await TagItem.create({ tagId, itemId });
+                item = await Item.findOne({
+                    where: { id: itemId },
+                    include: [
+                        {
+                            model: Tag,
+                            as: 'tags',
+                            through: {
+                                model: TagItem,
+                                attributes: [],
+                                required: false
+                            },
+                            required: false
+                        }
+                    ]
+                });
+                return res.json(item);
             }, req, res, next, 'TagController.set'
         )
     }
@@ -49,19 +70,34 @@ class TagController {
     async unset(req, res, next) {
         tryCatchWrapper(
             async () => {
-                const { id } = req.body;
-                const tagItem = await TagItem.findOne({ id });
+                const { tagId, itemId } = req.body;
+                const tagItem = await TagItem.findOne({ tagId, itemId });
                 if (!tagItem) {
-                    return next(ApiError.badRequest({ function: 'TagController.unset', message: `Не существует tagItem c ID ${id}` }));
+                    return next(ApiError.badRequest({ function: 'TagController.unset', message: `Не существует tagItem c tagId ${tagId}, itemId ${itemId}` }));
                 }
 
-                await TagItem.destroy({ where: { id } });
-                    return res.json(
+                await TagItem.destroy({ where: { tagId, itemId } });
+                const item = await Item.findOne({
+                    where: { id: itemId },
+                    include: [
                         {
-                            tagItem,
-                            result: 1
+                            model: Tag,
+                            as: 'tags',
+                            through: {
+                                model: TagItem,
+                                attributes: [],
+                                required: false
+                            },
+                            required: false
                         }
-                    )
+                    ]
+                });
+                return res.json(
+                    {
+                        item,
+                        result: 1
+                    }
+                )
             }, req, res, next, 'TagController.unset'
         )
     }

@@ -13,14 +13,7 @@ export const deleteTag = createAsyncThunk(
     'tags/deleteTag',
     deleteTagAPI
 )
-export const setTag = createAsyncThunk(
-    'tags/setTag',
-    setTagAPI
-)
-export const unsetTag = createAsyncThunk(
-    'tags/unsetTag',
-    unsetTagAPI
-)
+
 
 const initialState = {
     data: []
@@ -29,22 +22,16 @@ const initialState = {
 export const tagSlice = createSlice({
     name: 'tags',
     initialState,
-    // reducers: {
-    //     sortByRating(state, action) {
-    //         setCookie('itemsRatingSort', String(action.payload));
-    //         state.ratingSort = action.payload;
-    //         if (action.payload === 'true') {
-    //             state.data = state.data.sort((a, b) => b.rating - a.rating);
-    //         } else {
-    //             state.data = state.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-    //         }
-    //     }
-    // },
+    reducers: {
+        toggleFilterTags(state, action) {
+            state.data = state.data.map(obj => {if (obj.id === action.payload) {obj.active = !obj.active;} return obj});
+        }
+    },
     extraReducers: (builder) => {
         builder
             .addCase(
                 getTags.fulfilled, (state, action) => {
-                    state.data = action.payload.sort((a, b) => b.name - a.name);
+                    state.data = action.payload.sort((a, b) => b.name - a.name).map(obj => {obj.active = false; return obj});
                 }
             )
             .addCase(
@@ -65,5 +52,5 @@ export const tagSlice = createSlice({
 });
 
 const { reducer } = tagSlice;
-// export const { sortByRating } = tagSlice.actions;
+export const { toggleFilterTags } = tagSlice.actions;
 export default reducer;

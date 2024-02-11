@@ -11,6 +11,7 @@ import { getCookie } from '../utils/cookies';
 import { getAttachments } from '../reducers/attachments';
 import { getTags } from '../reducers/tags';
 import CreateTagButton from '../components/CreateTagButton';
+import CollectionTags from '../containers/CollectionTags';
 
 const Items = () => {
 
@@ -23,8 +24,10 @@ const Items = () => {
     const userId = useSelector(state => state.user.user.id);
     const [name, setName] = useState('');
     const [counter, setCounter] = useState(initialItems.length);
-    const [items, setItems] = useState(initialItems);
     const [sortedByRating, setSortedByRating] = useState(getCookie('itemsRatingSort') || 'false');
+    const [items, setItems] = useState(initialItems);
+    const tags = useSelector(state => state.tags.data);
+    const [filterTags, setFilterTags] = useState(tags.filter(item => item.active));
 
     const clickHandler = () => {
         if (name !== '') {
@@ -74,21 +77,42 @@ const Items = () => {
             }
         }, [collectionId]
     );
+    useEffect(
+        () => {
+            setFilterTags(tags.filter(item => item.active));
+        }, [tags]
+    );
+    useEffect(
+        () => {
+            if (filterTags.length > 0) {
+                setItems(
+                    initialItems.filter(
+                        item => 
+                            item.tags.map(tag => tag.name).length > 0 && 
+                            item.tags.map(tag => tag.name).some(
+                                elem => filterTags.map(obj => obj.name).includes(elem)
+                            )
+                    )
+                );
+            } else {
+                setItems(initialItems);
+            }
+        }, [filterTags, initialItems]
+    );
 
     return (
         <div style={{ padding: '10px' }}>
             <BackButton route={COLLECTIONS_ROUTE.replace(':id', userId)} />
             <form onSubmit={sumbitHandler} className={styles.inputContainer}>
-                {/* <div> */}
                 <button onClick={clickHandler}>CREATE</button>
                 <input style={{ width: "70%" }} value={name} onChange={inputHandler} />
-                {/* </div> */}
                 <div style={{ marginLeft: '10px', top: '7px', position: 'relative', marginBottom: '10px' }}>{`Пунктов: ${counter}`}</div>
-                <div style={{display: 'flex', justifyContent: 'space-around'}}>
+                <div style={{ display: 'flex', justifyContent: 'space-around' }}>
                     <div className={styles.ratingSort} style={{ borderColor: sortedByRating === 'true' ? 'green' : 'red' }} onClick={toggleRatingSort}>Sort by rating</div>
                     <CreateTagButton />
                 </div>
             </form>
+            <CollectionTags />
             <div className={styles.itemsContainer}>
                 {
                     items.map(item => <Item key={item.id} item={item} openVK={getCookie('openVK') === 'true'} />)

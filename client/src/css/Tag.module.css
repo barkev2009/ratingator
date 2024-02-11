@@ -1,0 +1,11 @@
+.tagContainer {
+    border-top: 1px solid black;
+    padding: 5px 10px;
+}
+
+.tag {
+    padding: 0 5px;
+    margin: 2px 2px;
+    font-weight: bold;
+    display: inline-block;
+}

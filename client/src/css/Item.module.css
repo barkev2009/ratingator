@@ -1,4 +1,4 @@
-.itemContainer, .choiceButtons {
+.itemInfoContainer, .choiceButtons {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -9,11 +9,14 @@
     border: 1px solid black;
     border-radius: 10px;
     /* width: 80%; */
+}
+.itemInfoContainer {
     height: 70px;
     align-items: center;
     padding: 5px;
     flex-shrink: 0;
 }
+
 
 .itemName {
     cursor: pointer;

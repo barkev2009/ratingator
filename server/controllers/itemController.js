@@ -1,6 +1,7 @@
-const { Item, Collection, Attachment } = require('../models/models');
+const { Item, Collection, Attachment, Tag, TagItem } = require('../models/models');
 const ApiError = require('../error/ApiError');
 const tryCatchWrapper = require('../utils/tryCatchWrapper');
+const { model } = require('../db');
 
 class ItemController {
 
@@ -70,7 +71,21 @@ class ItemController {
         tryCatchWrapper(
             async () => {
                 const { collectionId } = req.params;
-                const items = await Item.findAll({ where: { collectionId } });
+                const items = await Item.findAll({
+                    where: { collectionId },
+                    include: [
+                        {
+                            model: Tag,
+                            as: 'tags',
+                            through: {
+                                model: TagItem,
+                                attributes: [],
+                                required: false
+                            },
+                            required: false
+                        }
+                    ]
+                });
                 return res.json(items);
             }, req, res, next, 'ItemController.getItemsByCollection'
         )

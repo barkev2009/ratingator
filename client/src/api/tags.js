@@ -15,8 +15,8 @@ export const setTagAPI = async ({ tagId, itemId }) => {
     return data;
 }
 
-export const unsetTagAPI = async ({ id }) => {
-    const { data } = await $authHost.post(`api/tag/unset`, { id });
+export const unsetTagAPI = async ({ tagId, itemId }) => {
+    const { data } = await $authHost.post(`api/tag/unset`, { tagId, itemId });
     return data;
 }
 
