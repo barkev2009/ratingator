@@ -5,6 +5,7 @@ import collectionTypeReducer from '../reducers/collectionType';
 import collectionReducer from '../reducers/collections';
 import itemReducer from '../reducers/items';
 import attachmentReducer from '../reducers/attachments';
+import tagReducer from '../reducers/tags';
 
 export const store = configureStore(
     {
@@ -13,7 +14,8 @@ export const store = configureStore(
             collectionType: collectionTypeReducer,
             collections: collectionReducer,
             items: itemReducer,
-            attachments: attachmentReducer
+            attachments: attachmentReducer,
+            tags: tagReducer
         }
     }
 )

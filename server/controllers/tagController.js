@@ -46,6 +46,26 @@ class TagController {
         )
     }
 
+    async unset(req, res, next) {
+        tryCatchWrapper(
+            async () => {
+                const { id } = req.body;
+                const tagItem = await TagItem.findOne({ id });
+                if (!tagItem) {
+                    return next(ApiError.badRequest({ function: 'TagController.unset', message: `Не существует tagItem c ID ${id}` }));
+                }
+
+                await TagItem.destroy({ where: { id } });
+                    return res.json(
+                        {
+                            tagItem,
+                            result: 1
+                        }
+                    )
+            }, req, res, next, 'TagController.unset'
+        )
+    }
+
     async delete(req, res, next) {
         tryCatchWrapper(
             async () => {

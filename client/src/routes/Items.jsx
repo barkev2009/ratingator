@@ -9,6 +9,8 @@ import { COLLECTIONS_ROUTE } from '../constants';
 import styles from '../css/Items.module.css';
 import { getCookie } from '../utils/cookies';
 import { getAttachments } from '../reducers/attachments';
+import { getTags } from '../reducers/tags';
+import CreateTagButton from '../components/CreateTagButton';
 
 const Items = () => {
 
@@ -38,8 +40,8 @@ const Items = () => {
         setName(e.target.value);
     }
     const toggleRatingSort = () => {
-        dispatch(sortByRating(sortedByRating === 'true' ? 'false': 'true'));
-        setSortedByRating(sortedByRating === 'true' ? 'false': 'true');
+        dispatch(sortByRating(sortedByRating === 'true' ? 'false' : 'true'));
+        setSortedByRating(sortedByRating === 'true' ? 'false' : 'true');
     }
 
     useEffect(
@@ -66,18 +68,26 @@ const Items = () => {
     );
     useEffect(
         () => {
-            dispatch(getAttachments({ collectionId }));
+            if (collectionId) {
+                dispatch(getAttachments({ collectionId }));
+                dispatch(getTags({ collectionId }));
+            }
         }, [collectionId]
     );
 
     return (
-        <div>
+        <div style={{ padding: '10px' }}>
             <BackButton route={COLLECTIONS_ROUTE.replace(':id', userId)} />
             <form onSubmit={sumbitHandler} className={styles.inputContainer}>
+                {/* <div> */}
                 <button onClick={clickHandler}>CREATE</button>
-                <input value={name} onChange={inputHandler} />
-                <div style={{ marginLeft: '10px', top: '7px', position: 'relative' }}>{`Пунктов: ${counter}`}</div>
-                <div className={styles.ratingSort} style={{ borderColor: sortedByRating === 'true' ? 'green' : 'red' }} onClick={toggleRatingSort}>Sort by rating</div>
+                <input style={{ width: "70%" }} value={name} onChange={inputHandler} />
+                {/* </div> */}
+                <div style={{ marginLeft: '10px', top: '7px', position: 'relative', marginBottom: '10px' }}>{`Пунктов: ${counter}`}</div>
+                <div style={{display: 'flex', justifyContent: 'space-around'}}>
+                    <div className={styles.ratingSort} style={{ borderColor: sortedByRating === 'true' ? 'green' : 'red' }} onClick={toggleRatingSort}>Sort by rating</div>
+                    <CreateTagButton />
+                </div>
             </form>
             <div className={styles.itemsContainer}>
                 {
