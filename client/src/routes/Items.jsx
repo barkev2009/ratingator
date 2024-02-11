@@ -89,8 +89,8 @@ const Items = () => {
                     initialItems.filter(
                         item => 
                             item.tags.map(tag => tag.name).length > 0 && 
-                            item.tags.map(tag => tag.name).some(
-                                elem => filterTags.map(obj => obj.name).includes(elem)
+                            filterTags.map(obj => obj.name).every(
+                                elem => item.tags.map(tag => tag.name).includes(elem)
                             )
                     )
                 );
