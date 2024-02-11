@@ -8,17 +8,23 @@ class TagController {
         tryCatchWrapper(
             async () => {
                 const { name, collectionId } = req.body;
+                const counter = (await Tag.findAll()).length;
                 const colors = [
                     'crimson', 'chocolate', 'blueviolet',
                     'darkgoldenrod', 'darkgreen', 'darkmagenta', 'darkorchid',
                     'firebrick', 'indigo', 'midnightblue', 'olive',
                     'palevioletred', 'seagreen', 'steelblue', 'tomato'
                 ];
+                if (counter > colors.length - 1) {
+                    while (counter > colors.length - 1) {
+                        counter -= colors.length
+                    }
+                }
                 if (!collectionId) {
                     return next(ApiError.badRequest({ function: 'TagController.create', message: `Неверные параметры: collectionId - ${collectionId}` }));
                 }
 
-                const tag = await Tag.create({ name, collectionId, color: colors[Math.floor(Math.random() * colors.length)] });
+                const tag = await Tag.create({ name, collectionId, color: colors[counter] });
                 return res.json(tag);
             }, req, res, next, 'TagController.create'
         )
