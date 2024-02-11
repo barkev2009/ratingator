@@ -53,7 +53,7 @@ const Item = ({ item, openVK }) => {
           </div>
         </Modal>
         <Modal active={activeTag} setActive={setActiveTag}>
-          <h3>Управление тэгами</h3>
+          <h3>{`Управление тэгами: ${item.name}`}</h3>
           <ControlTags item={item} />
         </Modal>
       </div>
