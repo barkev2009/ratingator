@@ -38,7 +38,21 @@ class ItemController {
                     { where: { id } }
                 );
 
-                const newItem = await Item.findOne({ where: { id } });
+                const newItem = await Item.findOne({
+                    where: { id },
+                    include: [
+                        {
+                            model: Tag,
+                            as: 'tags',
+                            through: {
+                                model: TagItem,
+                                attributes: [],
+                                required: false
+                            },
+                            required: false
+                        }
+                    ]
+                });
                 return res.json({ item: newItem, result });
             }, req, res, next, 'ItemController.edit'
         )
