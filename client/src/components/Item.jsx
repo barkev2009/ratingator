@@ -34,10 +34,13 @@ const Item = ({ item, openVK }) => {
         <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
           <div className={styles.attachmentsContainer}>
             <AddAttachment itemId={item.id} />
-            {
+            {/* {
               attachments.filter(att => att.itemId === item.id).map(
                 item => <Attachment key={item.id} attachment={item} />
               )
+            } */}
+            {
+              attachments.filter(att => att.itemId === item.id).length > 0 && <Attachment attachment={attachments.filter(att => att.itemId === item.id)[0]} />
             }
           </div>
           <div className={styles.trashContainer} onClick={() => setActive(true)}>

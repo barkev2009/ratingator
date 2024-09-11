@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSelector, createSlice } from '@reduxjs/toolkit';
 import { createAttachmentAPI, deleteAttachmentAPI, getAttachmentsAPI } from '../api/attachments';
 
 export const getAttachments = createAsyncThunk(
@@ -45,6 +45,14 @@ export const attachmentSlice = createSlice({
             )
     }
 });
+
+export const getAttachmentsSelector = createSelector(
+    [
+        state => state.attachments.data,
+        (state, itemId) => itemId
+    ],
+    (attachments, itemId) => attachments.filter(i => i.itemId === itemId) 
+);
 
 const { reducer } = attachmentSlice;
 // export const { setCurCollection } = attachmentSlice.actions
