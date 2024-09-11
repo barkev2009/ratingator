@@ -29,15 +29,12 @@ const Items = () => {
     const tags = useSelector(state => state.tags.data);
     const [filterTags, setFilterTags] = useState(tags.filter(item => item.active));
 
-    const clickHandler = () => {
+    const sumbitHandler = (e) => {
+        e.preventDefault();
         if (name !== '') {
             dispatch(createItem({ name, collectionId }));
             setName('');
         }
-    }
-    const sumbitHandler = (e) => {
-        e.preventDefault();
-        clickHandler();
     }
     const inputHandler = (e) => {
         setName(e.target.value);
@@ -104,7 +101,7 @@ const Items = () => {
         <div style={{ padding: '10px' }}>
             <BackButton route={COLLECTIONS_ROUTE.replace(':id', userId)} />
             <form onSubmit={sumbitHandler} className={styles.inputContainer}>
-                <button onClick={clickHandler}>CREATE</button>
+                <button type='submit'>CREATE</button>
                 <input style={{ width: "70%" }} value={name} onChange={inputHandler} />
                 <div style={{ marginLeft: '10px', top: '7px', position: 'relative', marginBottom: '10px' }}>{`Пунктов: ${counter}`}</div>
                 <div style={{ display: 'flex', justifyContent: 'space-around' }}>

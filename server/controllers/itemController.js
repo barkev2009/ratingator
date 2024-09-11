@@ -17,7 +17,22 @@ class ItemController {
                     return next(ApiError.badRequest({ function: 'ItemController.create', message: `Коллекция с ID ${collectionId} не найдена` }));
                 }
 
-                const item = await Item.create({ name, collectionId, rating: 0 });
+                const crItem = await Item.create({ name, collectionId, rating: 0 });
+                const item = await Item.findOne({
+                    where: { id: crItem.id },
+                    include: [
+                        {
+                            model: Tag,
+                            as: 'tags',
+                            through: {
+                                model: TagItem,
+                                attributes: [],
+                                required: false
+                            },
+                            required: false
+                        }
+                    ]
+                });
                 return res.json(item);
             }, req, res, next, 'ItemController.create'
         )
