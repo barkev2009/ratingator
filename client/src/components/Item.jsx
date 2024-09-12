@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { deleteItem } from '../reducers/items';
+import { deleteItem, editItem } from '../reducers/items';
 import styles from '../css/Item.module.css';
 import Modal from '../common/Modal';
 import Trash from '../svg/Trash';
@@ -14,16 +14,20 @@ const Item = ({ item, openVK }) => {
 
   const dispatch = useDispatch();
   const [active, setActive] = useState(false);
+  const [name, setName] = useState(item.name);
   const [activeTag, setActiveTag] = useState(false);
   const attachments = useSelector(state => state.attachments.data);
 
   const deleteHandler = () => {
     dispatch(deleteItem({ id: item.id }))
   }
-  const hrefHandler = () => {
-    if (openVK) {
-      const q = item.name.replace(' ', '%20');
-      window.open(`https://vk.com/video?notsafe=1&q=${q}`, '_blank', 'rel=noopener noreferrer');
+
+  const submitHandler = (e) => {
+    e.preventDefault();
+    if (name.trim() === null || name.trim() === undefined || name.trim() === '') {
+      setName(item.name);
+    } else {
+      dispatch(editItem({ id: item.id, name: name.trim() }));
     }
   }
 
@@ -34,11 +38,6 @@ const Item = ({ item, openVK }) => {
         <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
           <div className={styles.attachmentsContainer}>
             <AddAttachment itemId={item.id} />
-            {/* {
-              attachments.filter(att => att.itemId === item.id).map(
-                item => <Attachment key={item.id} attachment={item} />
-              )
-            } */}
             {
               attachments.filter(att => att.itemId === item.id).length > 0 && <Attachment attachment={attachments.filter(att => att.itemId === item.id)[0]} />
             }
@@ -56,6 +55,10 @@ const Item = ({ item, openVK }) => {
           </div>
         </Modal>
         <Modal active={activeTag} setActive={setActiveTag}>
+          <form onSubmit={submitHandler}>
+            <input type="text" value={name} onChange={e => setName(e.target.value)} />
+            <button type="submit" disabled={item.name.trim() === name.trim()}>SAVE</button>
+          </form>
           <h3>{`Управление тэгами: ${item.name}`}</h3>
           <ControlTags item={item} />
         </Modal>
