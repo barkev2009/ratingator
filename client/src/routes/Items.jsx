@@ -102,13 +102,22 @@ const Items = () => {
     useEffect(
         () => {
             if (filterTags.length > 0) {
-                setScrollCounter(-1);
-                getItemsAPI({ collectionId, tags: filterTags.map(i => i.id) }).then(
-                    resp => { console.log(resp); setItems(resp) }
-                )
+                // setScrollCounter(-1);
+                // getItemsAPI({ collectionId, tags: filterTags.map(i => i.id) }).then(
+                //     resp => { console.log(resp); setItems(resp) }
+                // )
+                if (tags && tags.length > 0) {
+                    items = items.filter(
+                        item =>
+                            item.tags.map(tag => tag.name).length > 0 &&
+                            tags.every(
+                                elem => item.tags.map(tag => tag.id).includes(elem)
+                            )
+                    )
+                }
             } else {
                 setItems(initialItems);
-                setScrollCounter(0);
+                // setScrollCounter(0);
             }
         }, [filterTags, initialItems]
     );
