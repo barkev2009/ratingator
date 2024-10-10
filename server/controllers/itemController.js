@@ -100,11 +100,20 @@ class ItemController {
         tryCatchWrapper(
             async () => {
                 const { collectionId } = req.params;
+                const { limit, offset, sortByRating } = req.query;
+                console.log(sortByRating);
+                let order = [['createdAt', 'DESC']];
+                if (sortByRating === 'true') {
+                    order = [['rating', 'DESC'], ['createdAt', 'DESC']]
+                }
                 const items = await Item.findAll({
                     where: { collectionId },
+                    limit,
+                    offset,
+                    order,
                     include: [
                         {
-                            model: Tag,
+                            model: Tag, 
                             as: 'tags',
                             through: {
                                 model: TagItem,

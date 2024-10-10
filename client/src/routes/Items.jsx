@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import { useSetCookie } from '../hooks'
+import { useItemsIntersectionObserver, useSetCookie } from '../hooks'
 import BackButton from '../common/BackButton';
 import { useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { createItem, getItems, sortByRating } from '../reducers/items';
+import { clearItems, createItem, getAllItems, getItems, sortByRating as sortByRatingDispatch } from '../reducers/items';
 import Item from '../components/Item';
 import { COLLECTIONS_ROUTE } from '../constants';
 import styles from '../css/Items.module.css';
@@ -17,14 +17,17 @@ const Items = () => {
 
     useSetCookie();
 
+    const LIMIT = 10;
     const location = useLocation();
     const dispatch = useDispatch();
     const collectionId = location.pathname.split('/')[2];
     const initialItems = useSelector(state => state.items.data);
     const userId = useSelector(state => state.user.user.id);
+    const [scrollCounter, setScrollCounter] = useState(0);
     const [name, setName] = useState('');
     const [counter, setCounter] = useState(initialItems.length);
-    const [sortedByRating, setSortedByRating] = useState(getCookie('itemsRatingSort') || 'false');
+    const total = useSelector(state => state.items.total);
+    const [sortByRating, setSortByRating] = useState(getCookie('itemsRatingSort') || 'false');
     const [items, setItems] = useState(initialItems);
     const tags = useSelector(state => state.tags.data);
     const [filterTags, setFilterTags] = useState(tags.filter(item => item.active));
@@ -40,14 +43,30 @@ const Items = () => {
         setName(e.target.value);
     }
     const toggleRatingSort = () => {
-        dispatch(sortByRating(sortedByRating === 'true' ? 'false' : 'true'));
-        setSortedByRating(sortedByRating === 'true' ? 'false' : 'true');
+        dispatch(sortByRatingDispatch(sortByRating === 'true' ? 'false' : 'true'));
+        setSortByRating(sortByRating === 'true' ? 'false' : 'true');
+        setScrollCounter(0);
+        dispatch(clearItems());
+        dispatch(getItems({ collectionId, limit: LIMIT, offset: 0, sortByRating: sortByRating === 'true' ? 'false' : 'true' }));
     }
 
+    useItemsIntersectionObserver(setScrollCounter, LIMIT * scrollCounter, total);
+    useEffect(
+        () => {
+            console.log('COUNTER CHANGED: ' + scrollCounter);
+            if (LIMIT * scrollCounter < total) {
+                dispatch(getItems({ collectionId, limit: LIMIT, offset: LIMIT * scrollCounter, sortByRating }));
+            } else {
+                // setScrollCounter();
+            }
+        }, [scrollCounter]
+    );
     useEffect(
         () => {
             if (collectionId) {
-                dispatch(getItems({ collectionId }));
+                dispatch(getItems({ collectionId, limit: LIMIT, offset: LIMIT * scrollCounter, sortByRating }));
+                dispatch(getAllItems({ collectionId }));
+                // dispatch(getItems({ collectionId }));
             }
         }, []
     );
@@ -84,8 +103,8 @@ const Items = () => {
             if (filterTags.length > 0) {
                 setItems(
                     initialItems.filter(
-                        item => 
-                            item.tags.map(tag => tag.name).length > 0 && 
+                        item =>
+                            item.tags.map(tag => tag.name).length > 0 &&
                             filterTags.map(obj => obj.name).every(
                                 elem => item.tags.map(tag => tag.name).includes(elem)
                             )
@@ -103,16 +122,16 @@ const Items = () => {
             <form onSubmit={sumbitHandler} className={styles.inputContainer}>
                 <button type='submit'>CREATE</button>
                 <input style={{ width: "70%" }} value={name} onChange={inputHandler} />
-                <div style={{ marginLeft: '10px', top: '7px', position: 'relative', marginBottom: '10px' }}>{`Пунктов: ${counter}`}</div>
+                <div style={{ marginLeft: '10px', top: '7px', position: 'relative', marginBottom: '10px' }}>{`Пунктов: ${counter} / ${total}`}</div>
                 <div style={{ display: 'flex', justifyContent: 'space-around' }}>
-                    <div className={styles.ratingSort} style={{ borderColor: sortedByRating === 'true' ? 'green' : 'red' }} onClick={toggleRatingSort}>Sort by rating</div>
+                    <div className={styles.ratingSort} style={{ borderColor: sortByRating === 'true' ? 'green' : 'red' }} onClick={toggleRatingSort}>Sort by rating</div>
                     <CreateTagButton />
                 </div>
             </form>
             <CollectionTags />
             <div className={styles.itemsContainer}>
                 {
-                    items.map(item => <Item key={item.id} item={item} openVK={getCookie('openVK') === 'true'} />)
+                    items.map(item => <Item key={item.id} item={item} />)
                 }
             </div>
         </div>

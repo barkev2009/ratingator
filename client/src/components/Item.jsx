@@ -10,7 +10,7 @@ import Rating from './Rating';
 import ItemTags from '../containers/ItemTags';
 import ControlTags from '../containers/ControlTags';
 
-const Item = ({ item, openVK }) => {
+const Item = ({ item }) => {
 
   const dispatch = useDispatch();
   const [active, setActive] = useState(false);
