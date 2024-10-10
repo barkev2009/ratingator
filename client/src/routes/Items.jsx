@@ -106,15 +106,15 @@ const Items = () => {
                 // getItemsAPI({ collectionId, tags: filterTags.map(i => i.id) }).then(
                 //     resp => { console.log(resp); setItems(resp) }
                 // )
-                if (tags && tags.length > 0) {
-                    items = items.filter(
+                setItems(
+                    initialItems.filter(
                         item =>
                             item.tags.map(tag => tag.name).length > 0 &&
-                            tags.every(
-                                elem => item.tags.map(tag => tag.id).includes(elem)
+                            filterTags.map(obj => obj.name).every(
+                                elem => item.tags.map(tag => tag.name).includes(elem)
                             )
                     )
-                }
+                );
             } else {
                 setItems(initialItems);
                 // setScrollCounter(0);
