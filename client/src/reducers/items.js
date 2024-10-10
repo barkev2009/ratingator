@@ -87,7 +87,7 @@ export const itemSlice = createSlice({
             )
             .addCase(
                 editItem.fulfilled, (state, action) => {
-                    state.data[state.data.map(i => i.id).indexOf(action.payload.item.id)] = action.payload.item
+                    state.data[state.data.map(i => i.id).indexOf(action.payload.item.id)] = action.payload.item;
                     if (state.ratingSort === 'true') {
                         state.data = state.data.sort((a, b) => b.rating - a.rating);
                     } else {
@@ -109,8 +109,7 @@ export const itemSlice = createSlice({
             )
             .addCase(
                 setTag.fulfilled, (state, action) => {
-                    state.data = state.data.filter(item => item.id !== action.payload.id);
-                    state.data.push(action.payload);
+                    state.data[state.data.map(i => i.id).indexOf(action.payload.id)] = action.payload;
                     if (state.ratingSort === 'true') {
                         state.data = state.data.sort((a, b) => b.rating - a.rating);
                     } else {
@@ -120,8 +119,7 @@ export const itemSlice = createSlice({
             )
             .addCase(
                 unsetTag.fulfilled, (state, action) => {
-                    state.data = state.data.filter(item => item.id !== action.payload.item.id);
-                    state.data.push(action.payload.item);
+                    state.data[state.data.map(i => i.id).indexOf(action.payload.item.id)] = action.payload.item;
                     if (state.ratingSort === 'true') {
                         state.data = state.data.sort((a, b) => b.rating - a.rating);
                     } else {

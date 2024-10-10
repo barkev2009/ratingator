@@ -12,6 +12,7 @@ import { getAttachments } from '../reducers/attachments';
 import { getTags } from '../reducers/tags';
 import CreateTagButton from '../components/CreateTagButton';
 import CollectionTags from '../containers/CollectionTags';
+import { getItemsAPI } from '../api/items';
 
 const Items = () => {
 
@@ -47,26 +48,26 @@ const Items = () => {
         setSortByRating(sortByRating === 'true' ? 'false' : 'true');
         setScrollCounter(0);
         dispatch(clearItems());
-        dispatch(getItems({ collectionId, limit: LIMIT, offset: 0, sortByRating: sortByRating === 'true' ? 'false' : 'true' }));
+        dispatch(getItems({ collectionId, sortByRating: sortByRating === 'true' ? 'false' : 'true' }));
     }
 
-    useItemsIntersectionObserver(setScrollCounter, LIMIT * scrollCounter, total);
-    useEffect(
-        () => {
-            console.log('COUNTER CHANGED: ' + scrollCounter);
-            if (LIMIT * scrollCounter < total) {
-                dispatch(getItems({ collectionId, limit: LIMIT, offset: LIMIT * scrollCounter, sortByRating }));
-            } else {
-                // setScrollCounter();
-            }
-        }, [scrollCounter]
-    );
+    // useItemsIntersectionObserver(setScrollCounter, LIMIT * scrollCounter, total);
+    // useEffect(
+    //     () => {
+    //         if (scrollCounter >= 0) {
+    //             console.log('COUNTER CHANGED: ' + scrollCounter);
+    //             if (LIMIT * scrollCounter < total) {
+    //                 dispatch(getItems({ collectionId, limit: LIMIT, offset: LIMIT * scrollCounter, sortByRating }));
+    //             }
+    //         }
+    //     }, [scrollCounter]
+    // );
     useEffect(
         () => {
             if (collectionId) {
-                dispatch(getItems({ collectionId, limit: LIMIT, offset: LIMIT * scrollCounter, sortByRating }));
+                dispatch(getItems({ collectionId, sortByRating }));
+                // dispatch(getItems({ collectionId, limit: LIMIT, offset: LIMIT * scrollCounter, sortByRating }));
                 dispatch(getAllItems({ collectionId }));
-                // dispatch(getItems({ collectionId }));
             }
         }, []
     );
@@ -101,17 +102,13 @@ const Items = () => {
     useEffect(
         () => {
             if (filterTags.length > 0) {
-                setItems(
-                    initialItems.filter(
-                        item =>
-                            item.tags.map(tag => tag.name).length > 0 &&
-                            filterTags.map(obj => obj.name).every(
-                                elem => item.tags.map(tag => tag.name).includes(elem)
-                            )
-                    )
-                );
+                setScrollCounter(-1);
+                getItemsAPI({ collectionId, tags: filterTags.map(i => i.id) }).then(
+                    resp => { console.log(resp); setItems(resp) }
+                )
             } else {
                 setItems(initialItems);
+                setScrollCounter(0);
             }
         }, [filterTags, initialItems]
     );

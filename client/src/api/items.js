@@ -1,7 +1,7 @@
 import { $authHost } from '../web';
 
-export const getItemsAPI = async ({ collectionId, limit, offset, sortByRating }) => {
-    const { data } = await $authHost.get('api/item/collection/' + collectionId, { params: { limit, offset, sortByRating } });
+export const getItemsAPI = async ({ collectionId, limit, offset, sortByRating, tags }) => {
+    const { data } = await $authHost.get('api/item/collection/' + collectionId, { params: { limit, offset, sortByRating, tags } });
     return data;
 }
 

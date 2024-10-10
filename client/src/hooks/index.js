@@ -37,7 +37,7 @@ export const useItemsIntersectionObserver = (setScrollRef, current, total) => {
         }
     );
 
-    current < total && setTimeout(
+    current >= 0 && current < total && setTimeout(
         () => {
             let options = {
                 root: null,
