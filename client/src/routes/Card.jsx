@@ -8,6 +8,8 @@ import { editItem, getItem } from '../reducers/items';
 import styles from '../css/Card.module.css';
 import ControlTags from '../containers/ControlTags';
 import { getTags } from '../reducers/tags';
+import Carousel from '../components/Carousel';
+import { getAttachments } from '../reducers/attachments';
 
 const Card = () => {
     useSetCookie();
@@ -43,7 +45,8 @@ const Card = () => {
             if (itemSelector) {
                 setItem(itemSelector);
                 setName(itemSelector.name);
-                dispatch(getTags({collectionId: itemSelector.collectionId}))
+                dispatch(getTags({ collectionId: itemSelector.collectionId }));
+                dispatch(getAttachments({ collectionId: itemSelector.collectionId }));
             }
         }, [itemSelector]
     );
@@ -63,6 +66,9 @@ const Card = () => {
                 <button type='submit' disabled={disabled}>SAVE</button>
             </form>
             {item.tags !== undefined && <ControlTags item={item} />}
+            <div className={styles.carousel_container}>
+                <Carousel itemId={itemId} />
+            </div>
         </div>
     )
 }

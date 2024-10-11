@@ -9,4 +9,5 @@
     font-weight: bold;
     display: inline-block;
     cursor: pointer;
+    opacity: .6;
 }

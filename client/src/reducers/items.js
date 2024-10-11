@@ -72,6 +72,11 @@ export const itemSlice = createSlice({
                             }
                         }
                     );
+                    if (state.ratingSort === 'true') {
+                        state.data = state.data.sort((a, b) => b.rating - a.rating);
+                    } else {
+                        state.data = state.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+                    }
                 }
             )
             .addCase(

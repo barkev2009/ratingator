@@ -11,3 +11,11 @@
 .card input.name:hover {
     border: 1px solid #505050;
 }
+
+.card .carousel_container {
+    width: 90vw;
+    height: -moz-fit-content;
+    height: fit-content;
+    max-height: 80vh;
+    margin: 0 auto;
+}
