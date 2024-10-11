@@ -5,6 +5,8 @@ import { useSelector } from 'react-redux';
 const ControlTags = ({ item }) => {
 
     const tags = useSelector(state => state.tags.data);
+    console.log(item.tags);
+    console.log(tags);
 
     return (
         <div>

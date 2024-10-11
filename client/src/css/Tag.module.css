@@ -1,5 +1,5 @@
 .tagContainer {
-    border-top: 1px solid black;
+    border-top: 1px solid #505050;
     padding: 5px 10px;
 }
 
@@ -8,4 +8,5 @@
     margin: 2px 2px;
     font-weight: bold;
     display: inline-block;
+    cursor: pointer;
 }

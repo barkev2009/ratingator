@@ -30,7 +30,7 @@ const Collection = ({ collection }) => {
         <Trash />
       </div>
       <Modal active={active} setActive={setActive}>
-        <h3>Точно удалить коллекцию?</h3>
+        <h3 style={{ color: 'black' }}>Точно удалить коллекцию?</h3>
         <div className={styles.choiceButtons}>
           <div onClick={deleteHandler}>Да</div>
           <div onClick={() => setActive(false)}>Нет</div>

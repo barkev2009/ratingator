@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { createItemAPI, deleteItemAPI, editItemAPI, getItemsAPI } from '../api/items';
+import { createItemAPI, deleteItemAPI, editItemAPI, getItemAPI, getItemsAPI } from '../api/items';
 import { getCookie, setCookie } from '../utils/cookies';
 import { setTagAPI, unsetTagAPI } from '../api/tags';
 
@@ -10,6 +10,10 @@ export const getItems = createAsyncThunk(
 export const getAllItems = createAsyncThunk(
     'items/getAllItems',
     getItemsAPI
+)
+export const getItem = createAsyncThunk(
+    'items/getItem',
+    getItemAPI
 )
 export const createItem = createAsyncThunk(
     'items/createItem',
@@ -73,6 +77,18 @@ export const itemSlice = createSlice({
             .addCase(
                 getAllItems.fulfilled, (state, action) => {
                     state.total = action.payload.length;
+                }
+            )
+            .addCase(
+                getItem.fulfilled, (state, action) => {
+                    if (!state.data.map(i => i.id).includes(action.payload.id)) {
+                        state.data.push(action.payload);
+                    }
+                    if (state.ratingSort === 'true') {
+                        state.data = state.data.sort((a, b) => b.rating - a.rating);
+                    } else {
+                        state.data = state.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+                    }
                 }
             )
             .addCase(

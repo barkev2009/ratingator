@@ -33,5 +33,6 @@ span.pic_count {
     text-align: center;
     padding-bottom: 10px;
     border: 1px solid black;
+    color: black;
     line-height: 15px;
 }

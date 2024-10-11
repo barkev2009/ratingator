@@ -141,7 +141,23 @@ class ItemController {
         tryCatchWrapper(
             async () => {
                 const { id } = req.params;
-                const item = await Item.findOne({ where: { id } });
+                const item = await Item.findOne(
+                    {
+                        where: { id },
+                        include: [
+                            {
+                                model: Tag,
+                                as: 'tags',
+                                through: {
+                                    model: TagItem,
+                                    attributes: [],
+                                    required: false
+                                },
+                                required: false
+                            }
+                        ]
+                    }
+                );
                 return res.json(item);
             }, req, res, next, 'ItemController.getItemById'
         )

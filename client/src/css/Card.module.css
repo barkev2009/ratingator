@@ -1,0 +1,13 @@
+.card input.name {
+    font-weight: bolder;
+    font-size: 1.9rem;
+    background-color: transparent;
+    color: #b0b0b0;
+    width: 50vw;
+    border: 1px solid transparent;
+    transition: all .2s;
+}
+
+.card input.name:hover {
+    border: 1px solid #505050;
+}

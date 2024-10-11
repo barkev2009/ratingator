@@ -4,6 +4,7 @@ import { setCookie } from "../utils/cookies";
 import styles from '../css/Items.module.css';
 import itemStyles from '../css/Item.module.css';
 
+// Хук для установления текущей страницы, удобен при рефреше
 export const useSetCookie = () => {
     const location = useLocation();
     useEffect(

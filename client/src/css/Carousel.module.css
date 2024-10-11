@@ -73,6 +73,7 @@
     width: 15%;
     top: 0;
     right: 0;
+    cursor: pointer;
 }
 
 @media screen and (orientation: portrait) {

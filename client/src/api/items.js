@@ -5,6 +5,11 @@ export const getItemsAPI = async ({ collectionId, limit, offset, sortByRating, t
     return data;
 }
 
+export const getItemAPI = async ({ id }) => {
+    const { data } = await $authHost.get('api/item/id/' + id);
+    return data;
+}
+
 export const createItemAPI = async ({ name, collectionId }) => {
     const { data } = await $authHost.post('api/item', { name, collectionId });
     return data;

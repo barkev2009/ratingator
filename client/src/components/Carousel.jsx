@@ -83,7 +83,7 @@ const Carousel = ({ itemId }) => {
             <button className={[styles.carousel_btn, styles.left].join(' ')} onClick={goToPrevSlide}>{'<'}</button>
             <button className={[styles.carousel_btn, styles.right].join(' ')} onClick={goToNextSlide}>{'>'}</button>
             <Modal active={active} setActive={setActive}>
-                <h3>Точно удалить изображение?</h3>
+                <h3 style={{ color: 'black' }}>Точно удалить изображение?</h3>
                 <div>
                     <button onClick={deleteHandler}>Да</button>
                     <button onClick={() => setActive(false)}>Нет</button>

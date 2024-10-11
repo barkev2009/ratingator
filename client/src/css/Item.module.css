@@ -6,7 +6,7 @@
 
 .itemContainer {
     margin-bottom: 10px;
-    border: 1px solid black;
+    border: 1px solid #505050;
     border-radius: 10px;
     width: 80%;
 }
@@ -36,7 +36,7 @@
 }
 
 .addAttachment {
-    border: 1px solid black;
+    border: 1px solid #b0b0b0;
     border-radius: 7px;
     min-width: 40px;
     max-height: 33px;
