@@ -63,19 +63,18 @@ export const itemSlice = createSlice({
         builder
             .addCase(
                 getItems.fulfilled, (state, action) => {
-                    const ids = state.data.map(i => i.id);
-                    action.payload.forEach(
-                        item => {
-                            if (!ids.includes(item.id)) {
-                                state.data.push(item); 
-                                ids.push(item.id);
-                            }
-                        }
-                    );
-                    if (state.ratingSort === 'true') {
-                        state.data = state.data.sort((a, b) => b.rating - a.rating);
+                    if (state.data.length === 1) {
+                        state.data = action.payload;
                     } else {
-                        state.data = state.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+                        const ids = state.data.map(i => i.id);
+                        action.payload.forEach(
+                            item => {
+                                if (!ids.includes(item.id)) {
+                                    state.data.push(item);
+                                    ids.push(item.id);
+                                }
+                            }
+                        );
                     }
                 }
             )

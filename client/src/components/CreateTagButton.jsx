@@ -27,7 +27,7 @@ const CreateTagButton = () => {
       <div className={styles.createTag} onClick={() => setActive(!active)}>Create tag</div>
       <Modal active={active} setActive={setActive} >
         <div>
-          <h3>Создать тэг</h3>
+          <h3 style={{color: 'black'}}>Создать тэг</h3>
           <input placeholder='Название тэга' onChange={e => setName(e.target.value.toLowerCase())} value={name} />
           <button onClick={clickHandler} type='submit'>CREATE</button>
         </div>
