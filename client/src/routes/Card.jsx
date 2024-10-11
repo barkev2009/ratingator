@@ -10,6 +10,7 @@ import ControlTags from '../containers/ControlTags';
 import { getTags } from '../reducers/tags';
 import Carousel from '../components/Carousel';
 import { getAttachments } from '../reducers/attachments';
+import AddAttachment from '../components/AddAttachment';
 
 const Card = () => {
     useSetCookie();
@@ -66,6 +67,7 @@ const Card = () => {
                 <button type='submit' disabled={disabled}>SAVE</button>
             </form>
             {item.tags !== undefined && <ControlTags item={item} />}
+            <AddAttachment itemId={itemId} />
             <div className={styles.carousel_container}>
                 <Carousel itemId={itemId} />
             </div>
