@@ -44,6 +44,10 @@
     margin: 0 5px;
 }
 
+form .addAttachment {
+    display: inline-block;
+}
+
 .addAttachment svg {
     width: 25px;
     margin-left: 7px;

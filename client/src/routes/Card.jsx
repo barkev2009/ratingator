@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 import { editItem, getItem } from '../reducers/items';
 import styles from '../css/Card.module.css';
+import carouselStyles from '../css/Carousel.module.css';
 import ControlTags from '../containers/ControlTags';
 import { getTags } from '../reducers/tags';
 import Carousel from '../components/Carousel';
@@ -60,17 +61,22 @@ const Card = () => {
     );
 
     return (
-        <div className={styles.card}>
+        <div className={[styles.card, carouselStyles.card].join(' ')}>
             <BackButton route={COLLECTION_ROUTE.replace(':id', item.collectionId)} />
-            <form onSubmit={submitHandler}>
-                <input className={styles.name} type="text" value={name} onChange={e => setName(e.target.value)} />
-                <button type='submit' disabled={disabled}>SAVE</button>
-            </form>
-            {item.tags !== undefined && <ControlTags item={item} />}
-            <AddAttachment itemId={itemId} />
-            <div className={styles.carousel_container}>
-                <Carousel itemId={itemId} />
+            <div className={styles.card_container}>
+                <div className={styles.carousel_container}>
+                    <Carousel itemId={itemId} />
+                </div>
+                <div>
+                    <form onSubmit={submitHandler}>
+                        <input className={styles.name} type="text" value={name} onChange={e => setName(e.target.value)} />
+                        <button type='submit' disabled={disabled}>SAVE</button>
+                        <AddAttachment itemId={itemId} />
+                    </form>
+                    {item.tags !== undefined && <ControlTags item={item} />}
+                </div>
             </div>
+
         </div>
     )
 }

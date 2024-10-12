@@ -1,3 +1,4 @@
+
 .card input.name {
     font-weight: bolder;
     font-size: 1.9rem;
@@ -13,9 +14,35 @@
 }
 
 .card .carousel_container {
-    width: 90vw;
+    width: 80vw;
     height: -moz-fit-content;
     height: fit-content;
     max-height: 80vh;
-    margin: 0 auto;
+    margin: auto;
 }
+
+.card_container {
+    width: 90%;
+    height: 90vh;
+    border-radius: 2rem;
+    margin: 0 auto;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    background-color: #4e4f72;
+}
+.card_container > div:first-child {
+    flex: 3 0;
+}
+.card_container > div:last-child {
+    flex: 1 0;
+}
+
+@media screen and (orientation: landscape) {
+    .card_container {
+        flex-direction: row;
+    }
+    .card .carousel_container {
+        width: 30vw;
+    }
+} 

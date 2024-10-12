@@ -31,12 +31,25 @@
     width: 20px;
 }
 
+.card .carousel_btn {
+    background-color: #4e4f72;
+    border: 2px solid #4e4f72;
+    color: #b0b0b0;
+    font-weight: bold;
+}
+
 .carousel_btn.left {
     left: 0;
 }
-
 .carousel_btn.right {
     right: 0;
+}
+
+.card .carousel_btn.left {
+    left: -1px;
+}
+.card .carousel_btn.right {
+    right: -1px;
 }
 
 .carousel {
