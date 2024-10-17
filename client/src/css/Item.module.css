@@ -44,7 +44,7 @@
     margin: 0 5px;
 }
 
-form .addAttachment {
+form + .addAttachment {
     display: inline-block;
 }
 

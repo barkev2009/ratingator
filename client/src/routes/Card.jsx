@@ -71,8 +71,8 @@ const Card = () => {
                     <form onSubmit={submitHandler}>
                         <input className={styles.name} type="text" value={name} onChange={e => setName(e.target.value)} />
                         <button type='submit' disabled={disabled}>SAVE</button>
-                        <AddAttachment itemId={itemId} />
                     </form>
+                    <AddAttachment itemId={itemId} />
                     {item.tags !== undefined && <ControlTags item={item} />}
                 </div>
             </div>

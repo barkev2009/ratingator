@@ -15,6 +15,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
   background-color: #001e23;
   color: #b0b0b0;
+  /* animation: 2s toggle infinite forwards; */
 }
 
 button {
@@ -24,4 +25,40 @@ button {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+@keyframes toggle {
+  0% {
+    background-color: black;
+  }
+  10% {
+    background-color: white;
+  }
+  15% {
+    background-color: black;
+  }
+  30% {
+    background-color: white;
+  }
+  55% {
+    background-color: black;
+  }
+  60% {
+    background-color: white;
+  }
+  65% {
+    background-color: black;
+  }
+  70% {
+    background-color: white;
+  }
+  80% {
+    background-color: black;
+  }
+  99% {
+    background-color: white;
+  }
+  100% {
+    background-color: black;
+  }
 }
