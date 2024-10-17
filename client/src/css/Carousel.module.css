@@ -21,7 +21,9 @@
 
 .carousel-marker_container {
     position: absolute;
-    left: 45%;
+    display: flex;
+    justify-content: center;
+    width: 100%;
 }
 
 .carousel_btn {
