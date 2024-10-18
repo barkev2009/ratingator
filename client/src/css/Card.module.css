@@ -38,6 +38,11 @@
     flex: 1 0;
 }
 
+.card .func_container {
+    display: flex;
+    justify-content: space-between;
+}
+
 @media screen and (orientation: landscape) {
     .card_container {
         flex-direction: row;

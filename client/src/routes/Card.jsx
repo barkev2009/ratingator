@@ -12,6 +12,7 @@ import { getTags } from '../reducers/tags';
 import Carousel from '../components/Carousel';
 import { getAttachments } from '../reducers/attachments';
 import AddAttachment from '../components/AddAttachment';
+import Rating from '../components/Rating';
 
 const Card = () => {
     useSetCookie();
@@ -61,7 +62,7 @@ const Card = () => {
     );
 
     return (
-        <div className={[styles.card, carouselStyles.card].join(' ')}>
+        <div id='card' className={[styles.card, carouselStyles.card].join(' ')}>
             <BackButton route={COLLECTION_ROUTE.replace(':id', item.collectionId)} />
             <div className={styles.card_container}>
                 <div className={styles.carousel_container}>
@@ -72,7 +73,10 @@ const Card = () => {
                         <input className={styles.name} type="text" value={name} onChange={e => setName(e.target.value)} />
                         <button type='submit' disabled={disabled}>SAVE</button>
                     </form>
-                    <AddAttachment itemId={itemId} />
+                    <div className={styles.func_container}>
+                        <AddAttachment itemId={itemId} />
+                        <Rating item={item} />
+                    </div>
                     {item.tags !== undefined && <ControlTags item={item} />}
                 </div>
             </div>
