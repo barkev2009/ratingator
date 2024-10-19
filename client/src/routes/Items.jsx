@@ -123,18 +123,20 @@ const Items = () => {
     );
 
     return (
-        <div style={{ padding: '10px' }}>
-            <BackButton route={COLLECTIONS_ROUTE.replace(':id', userId)} />
-            <form onSubmit={sumbitHandler} className={styles.inputContainer}>
-                <button type='submit'>CREATE</button>
-                <input style={{ width: "70%", backgroundColor: '#b0b0b0' }} value={name} onChange={inputHandler} />
-                <div style={{ marginLeft: '10px', top: '7px', position: 'relative', marginBottom: '10px' }}>{`Пунктов: ${counter} / ${total}`}</div>
-                <div style={{ display: 'flex', justifyContent: 'space-around' }}>
-                    <div className={styles.ratingSort} style={{ borderColor: sortByRating === 'true' ? 'green' : 'red' }} onClick={toggleRatingSort}>Sort by rating</div>
-                    <CreateTagButton />
-                </div>
-            </form>
-            <CollectionTags />
+        <div>
+            <div className={styles.upperContainer}>
+                <BackButton route={COLLECTIONS_ROUTE.replace(':id', userId)} />
+                <form onSubmit={sumbitHandler} className={styles.inputContainer}>
+                    <button type='submit'>CREATE</button>
+                    <input style={{ width: "70%", backgroundColor: '#b0b0b0' }} value={name} onChange={inputHandler} />
+                    <div style={{ marginLeft: '10px', top: '7px', position: 'relative', marginBottom: '10px' }}>{`Пунктов: ${counter} / ${total}`}</div>
+                    <div style={{ display: 'flex', justifyContent: 'space-around' }}>
+                        <div className={styles.ratingSort} style={{ borderColor: sortByRating === 'true' ? 'green' : 'red' }} onClick={toggleRatingSort}>Sort by rating</div>
+                        <CreateTagButton />
+                    </div>
+                </form>
+                <CollectionTags />
+            </div>
             <div className={styles.itemsContainer}>
                 {
                     items.map(item => <Item key={item.id} item={item} />)

@@ -5,10 +5,8 @@
 }
 
 .itemContainer {
-    margin-bottom: 10px;
-    border: 1px solid #505050;
-    border-radius: 10px;
-    width: 80%;
+    border-bottom: 1px solid #505050;
+    width: 100%;
 }
 .itemInfoContainer {
     height: 70px;
