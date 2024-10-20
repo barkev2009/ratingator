@@ -2,6 +2,10 @@ const { Item, Collection, Attachment, Tag, TagItem } = require('../models/models
 const ApiError = require('../error/ApiError');
 const tryCatchWrapper = require('../utils/tryCatchWrapper');
 const { model } = require('../db');
+const fs = require('fs');
+const pathLib = require('path');
+const uuid = require('uuid');
+const imageThumbnail = require('image-thumbnail');
 
 class ItemController {
 
@@ -160,6 +164,52 @@ class ItemController {
                 );
                 return res.json(item);
             }, req, res, next, 'ItemController.getItemById'
+        )
+    }
+
+    async migrateAvatars(req, res, next) {
+        tryCatchWrapper(
+            async () => {
+                let items = await Item.findAll(
+                    {
+                        include: [
+                            {
+                                model: Attachment,
+                                required: false
+                            }
+                        ]
+                    }
+                );
+                let item;
+                for (let i = 0; i < items.length; i++) {
+                    item = items[i];
+                    if (item.avatar_path === null && item.attachments.length > 0) {
+                        const path = item.attachments[0].path.split('?')[0];
+                        const splits = path.split('.');
+                        const fmt = splits[splits.length - 1];
+                        const thumbnail = await imageThumbnail({ uri: path });
+                        const fileName = uuid.v4();
+
+                        fs.writeFileSync(pathLib.resolve(__dirname, '..', 'static', fileName + '.' + fmt), thumbnail);
+
+                        const result = await Item.update(
+                            { avatar_path: `${process.env.SERVER_URL}/${fileName}.${fmt}` },
+                            { where: { id: item.id } }
+                        );
+                    }
+                }
+                items = await Item.findAll(
+                    {
+                        include: [
+                            {
+                                model: Attachment,
+                                required: false
+                            }
+                        ]
+                    }
+                );
+                return res.json(items);
+            }, req, res, next, 'ItemController.migrateAvatars'
         )
     }
 }

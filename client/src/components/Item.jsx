@@ -34,7 +34,7 @@ const Item = ({ item }) => {
           <div className={styles.attachmentsContainer}>
             <AddAttachment itemId={item.id} />
             {
-              attachments.filter(att => att.itemId === item.id).length > 0 && <Attachment attachment={attachments.filter(att => att.itemId === item.id)[0]} />
+              attachments.filter(att => att.itemId === item.id).length > 0 && <Attachment item={item} />
             }
           </div>
           <div className={styles.trashContainer} onClick={() => setActive(true)}>

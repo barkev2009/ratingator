@@ -7,8 +7,9 @@ import { clearItems, createItem, getAllItems, getItems, sortByRating as sortByRa
 import Item from '../components/Item';
 import { COLLECTIONS_ROUTE } from '../constants';
 import styles from '../css/Items.module.css';
+import cardStyles from '../css/Card.module.css';
 import { getCookie } from '../utils/cookies';
-import { getAttachments } from '../reducers/attachments';
+import { clearError, getAttachments } from '../reducers/attachments';
 import { getTags } from '../reducers/tags';
 import CreateTagButton from '../components/CreateTagButton';
 import CollectionTags from '../containers/CollectionTags';
@@ -24,6 +25,7 @@ const Items = () => {
     const collectionId = location.pathname.split('/')[2];
     const initialItems = useSelector(state => state.items.data);
     const userId = useSelector(state => state.user.user.id);
+    const error = useSelector(state => state.attachments.error);
     const [scrollCounter, setScrollCounter] = useState(0);
     const [name, setName] = useState('');
     const [counter, setCounter] = useState(initialItems.length);
@@ -121,11 +123,20 @@ const Items = () => {
             }
         }, [filterTags, initialItems]
     );
+    useEffect(
+        () => {
+            if (error !== null) {
+                setTimeout(() => dispatch(clearError()), 5000);
+            }
+        }, [error]
+    );
+    
 
     return (
         <div>
             <div className={styles.upperContainer}>
                 <BackButton route={COLLECTIONS_ROUTE.replace(':id', userId)} />
+                {error !== null && <div className={cardStyles.error}>{error}</div>}
                 <form onSubmit={sumbitHandler} className={styles.inputContainer}>
                     <button type='submit'>CREATE</button>
                     <input style={{ width: "70%", backgroundColor: '#b0b0b0' }} value={name} onChange={inputHandler} />

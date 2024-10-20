@@ -10,7 +10,7 @@ import carouselStyles from '../css/Carousel.module.css';
 import ControlTags from '../containers/ControlTags';
 import { getTags } from '../reducers/tags';
 import Carousel from '../components/Carousel';
-import { getAttachments } from '../reducers/attachments';
+import { clearError, getAttachments } from '../reducers/attachments';
 import AddAttachment from '../components/AddAttachment';
 import Rating from '../components/Rating';
 
@@ -22,6 +22,7 @@ const Card = () => {
     const itemId = location.pathname.split('/')[2];
     const itemSelector = useSelector(state => state.items.data.filter(i => i.id === itemId)[0]);
     const tags = useSelector(state => state.tags.data);
+    const error = useSelector(state => state.attachments.error);
     const [item, setItem] = useState({});
     const [name, setName] = useState('');
     const [disabled, setDisabled] = useState(true);
@@ -60,10 +61,18 @@ const Card = () => {
             }
         }, [name]
     );
+    useEffect(
+        () => {
+            if (error !== null) {
+                setTimeout(() => dispatch(clearError()), 5000);
+            }
+        }, [error]
+    );
 
     return (
         <div id='card' className={[styles.card, carouselStyles.card].join(' ')}>
             <BackButton route={COLLECTION_ROUTE.replace(':id', item.collectionId)} />
+            {error !== null && <div className={styles.error}>{error}</div>}
             <div className={styles.card_container}>
                 <div className={styles.carousel_container}>
                     <Carousel itemId={itemId} />

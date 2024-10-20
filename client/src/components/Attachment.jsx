@@ -5,17 +5,17 @@ import Carousel from './Carousel';
 import { useSelector } from 'react-redux';
 import { getAttachmentsSelector } from '../reducers/attachments';
 
-const Attachment = ({ attachment }) => {
+const Attachment = ({ item }) => {
 
     const [active, setActive] = useState(false);
-    const attachments = useSelector(state => getAttachmentsSelector(state, attachment.itemId))
+    const attachments = useSelector(state => getAttachmentsSelector(state, item.id))
 
     return (
         <div style={{display: 'flex', position: 'relative'}}>
-            <img onClick={() => setActive(true)} className={styles.thumbnail} src={attachment.path} alt={attachment.id} />
+            <img onClick={() => setActive(true)} className={styles.thumbnail} src={item.avatar_path} alt={`${item.name} avatar`} />
             <span className={styles.pic_count}>{attachments.length}</span>
             <Modal active={active} setActive={setActive}>
-                <Carousel itemId={attachment.itemId} />
+                <Carousel itemId={item.id} />
             </Modal>
         </div>
     )
