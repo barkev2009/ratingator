@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Modal from '../common/Modal';
 import styles from '../css/Attachment.module.css';
 import Carousel from './Carousel';
@@ -19,6 +19,13 @@ const Attachment = ({ item }) => {
         setActive(false);
         setPath('');
     }
+    useEffect(
+        () => {
+            if (!active) {
+                setPath('');
+            }
+        }, [active]
+    );
 
     return (
         <div style={{ display: 'flex', position: 'relative' }}>
