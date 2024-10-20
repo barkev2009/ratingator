@@ -193,16 +193,17 @@ class ItemController {
                                 break;
                             }
                         }
+                        if (['jpg', 'png', 'webp', 'jpeg'].includes(fmt.toLowerCase())) {
+                            const thumbnail = await imageThumbnail({ uri: path });
+                            const fileName = uuid.v4();
 
-                        const thumbnail = await imageThumbnail({ uri: path });
-                        const fileName = uuid.v4();
+                            fs.writeFileSync(pathLib.resolve(__dirname, '..', 'static', fileName + '.' + fmt), thumbnail);
 
-                        fs.writeFileSync(pathLib.resolve(__dirname, '..', 'static', fileName + '.' + fmt), thumbnail);
-
-                        const result = await Item.update(
-                            { avatar_path: `${process.env.SERVER_URL}/${fileName}.${fmt}` },
-                            { where: { id: item.id } }
-                        );
+                            const result = await Item.update(
+                                { avatar_path: `${process.env.SERVER_URL}/${fileName}.${fmt}` },
+                                { where: { id: item.id } }
+                            );
+                        }
                     }
                 }
                 items = await Item.findAll(
