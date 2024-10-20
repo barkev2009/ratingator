@@ -120,7 +120,7 @@ export const itemSlice = createSlice({
                             state.data = state.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
                         }
                     } else {
-                        state.error = JSON.stringify(action.payload.error, null, 2);
+                        state.error = JSON.stringify(action.payload.error, undefined, 2);
                     }
                 }
             )

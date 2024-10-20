@@ -126,7 +126,7 @@ const Items = () => {
     useEffect(
         () => {
             if (error !== null) {
-                setTimeout(() => dispatch(clearError()), 5000);
+                setTimeout(() => dispatch(clearError()), 10 * 1000);
             }
         }, [error]
     );
@@ -136,7 +136,7 @@ const Items = () => {
         <div>
             <div className={styles.upperContainer}>
                 <BackButton route={COLLECTIONS_ROUTE.replace(':id', userId)} />
-                {error !== null && <div className={cardStyles.error}>{error}</div>}
+                {error !== null && <pre className={cardStyles.error}>{error}</pre>}
                 <form onSubmit={sumbitHandler} className={styles.inputContainer}>
                     <button type='submit'>CREATE</button>
                     <input style={{ width: "70%", backgroundColor: '#b0b0b0' }} value={name} onChange={inputHandler} />
