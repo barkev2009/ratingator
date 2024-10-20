@@ -5,7 +5,8 @@ const { model } = require('../db');
 const fs = require('fs');
 const pathLib = require('path');
 const uuid = require('uuid');
-const imageThumbnail = require('image-thumbnail');
+const sharp = require('sharp');
+const axios = require('axios');
 
 class ItemController {
 
@@ -63,7 +64,7 @@ class ItemController {
                     if (!['jpg', 'png', 'webp', 'jpeg'].includes(fmt.toLowerCase())) {
                         return next(ApiError.badRequest({ function: 'ItemController.edit', message: 'Формат не подходит' }));
                     }
-                    const thumbnail = await imageThumbnail({ uri: avatar_path });
+                    const input = (await axios({ url: avatar_path, responseType: "arraybuffer" })).data;
                     const fileName = uuid.v4();
                     if (item.avatar_path !== null) {
                         const dashes = item.avatar_path.split('/');
@@ -71,7 +72,7 @@ class ItemController {
                         fs.rmSync(pathLib.resolve(__dirname, '..', 'static', dashes[dashes.length - 1]));
                     }
 
-                    fs.writeFileSync(pathLib.resolve(__dirname, '..', 'static', fileName + '.' + fmt), thumbnail);
+                    const pipeline = sharp(input).resize(200, 200, {fit: 'cover'}).toFile(pathLib.resolve(__dirname, '..', 'static', fileName + '.' + fmt));
 
                     const anotherResult = await Item.update(
                         { avatar_path: `${process.env.SERVER_URL}/${fileName}.${fmt}` },
