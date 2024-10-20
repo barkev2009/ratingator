@@ -126,7 +126,7 @@ const Items = () => {
     useEffect(
         () => {
             if (error !== null) {
-                setTimeout(() => dispatch(clearError()), 30 * 1000);
+                setTimeout(() => dispatch(clearError()), 10 * 1000);
             }
         }, [error]
     );
