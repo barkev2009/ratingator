@@ -59,7 +59,7 @@ class ItemController {
                 );
 
                 if (avatar_path !== null && avatar_path !== undefined) {
-                    const splits = avatar_path.split('.');
+                    const splits = avatar_path.split('?')[0].split('.');
                     const fmt = splits[splits.length - 1];
                     if (!['jpg', 'png', 'webp', 'jpeg'].includes(fmt.toLowerCase())) {
                         return next(ApiError.badRequest({ function: 'ItemController.edit', message: 'Формат не подходит' }));
