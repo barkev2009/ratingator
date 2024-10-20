@@ -184,9 +184,16 @@ class ItemController {
                 for (let i = 0; i < items.length; i++) {
                     item = items[i];
                     if (item.avatar_path === null && item.attachments.length > 0) {
-                        const path = item.attachments[0].path.split('?')[0];
-                        const splits = path.split('.');
-                        const fmt = splits[splits.length - 1];
+                        let path;
+                        for (let attIndex = 0; attIndex < item.attachments.length; attIndex++) {
+                            path = item.attachments[attIndex].path.split('?')[0];
+                            const splits = path.split('.');
+                            const fmt = splits[splits.length - 1];
+                            if (['jpg', 'png', 'webp', 'jpeg'].includes(fmt.toLowerCase())) {
+                                break;
+                            }
+                        }
+
                         const thumbnail = await imageThumbnail({ uri: path });
                         const fileName = uuid.v4();
 
