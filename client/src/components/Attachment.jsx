@@ -9,6 +9,7 @@ import { editItem } from '../reducers/items';
 const Attachment = ({ item }) => {
 
     const [active, setActive] = useState(false);
+    const [loading, setLoading] = useState(false);
     const [path, setPath] = useState('');
     const dispatch = useDispatch();
     const attachments = useSelector(state => getAttachmentsSelector(state, item.id));
@@ -17,6 +18,7 @@ const Attachment = ({ item }) => {
         e.preventDefault();
         dispatch(editItem({id: item.id, avatar_path: path}));
         setActive(false);
+        setLoading(true);
         setPath('');
     }
     useEffect(
@@ -26,6 +28,11 @@ const Attachment = ({ item }) => {
             }
         }, [active]
     );
+    useEffect(
+        () => {
+            setLoading(false);
+        }, [item.avatar_path]
+    );
 
     return (
         <div style={{ display: 'flex', position: 'relative' }}>
@@ -34,6 +41,7 @@ const Attachment = ({ item }) => {
                     <img onClick={() => setActive(true)} className={styles.thumbnail} src={item.avatar_path} alt={`${item.name} avatar`} /> :
                     <div onClick={() => setActive(true)} className={styles.thumbnail}>No image</div>
             }
+            {loading && <div className={styles.loader}><div className={styles.spinner}></div></div>}
             <span className={styles.pic_count}>{attachments.length}</span>
             <Modal active={active} setActive={setActive}>
                 <form onSubmit={submitHandler}>
