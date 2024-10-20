@@ -10,6 +10,7 @@ const Attachment = ({ item }) => {
 
     const [active, setActive] = useState(false);
     const [loading, setLoading] = useState(false);
+    const error = useSelector(state => state.items.error);
     const [path, setPath] = useState('');
     const dispatch = useDispatch();
     const attachments = useSelector(state => getAttachmentsSelector(state, item.id));
@@ -31,7 +32,7 @@ const Attachment = ({ item }) => {
     useEffect(
         () => {
             setLoading(false);
-        }, [item.avatar_path]
+        }, [item.avatar_path, error]
     );
 
     return (

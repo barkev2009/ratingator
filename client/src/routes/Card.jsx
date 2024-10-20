@@ -22,6 +22,7 @@ const Card = () => {
     const itemId = location.pathname.split('/')[2];
     const itemSelector = useSelector(state => state.items.data.filter(i => i.id === itemId)[0]);
     const tags = useSelector(state => state.tags.data);
+    const [loading, setLoading] = useState(false);
     const [item, setItem] = useState({});
     const [name, setName] = useState('');
     const [disabled, setDisabled] = useState(true);

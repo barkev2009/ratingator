@@ -1,8 +1,7 @@
 import React, { useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { deleteItem } from '../reducers/items';
 import styles from '../css/Item.module.css';
-import attStyles from '../css/Attachment.module.css';
 import Modal from '../common/Modal';
 import Trash from '../svg/Trash';
 import Attachment from './Attachment';
@@ -16,7 +15,6 @@ const Item = ({ item }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [active, setActive] = useState(false);
-  const attachments = useSelector(state => state.attachments.data);
 
   const clickHandler = () => {
     navigate(CARD_ROUTE.replace(':id', item.id));
