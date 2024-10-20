@@ -62,7 +62,7 @@ class ItemController {
                     const splits = avatar_path.split('?')[0].split('.');
                     const fmt = splits[splits.length - 1];
                     if (!['jpg', 'png', 'webp', 'jpeg'].includes(fmt.toLowerCase())) {
-                        return next(ApiError.badRequest({ function: 'ItemController.edit', message: 'Формат не подходит' }));
+                        return next(ApiError.badRequest({ function: 'ItemController.edit', message: 'Формат не подходит', payload: { fmt, avatar_path } }));
                     }
                     const input = (await axios({ url: avatar_path, responseType: "arraybuffer" })).data;
                     const fileName = uuid.v4();
@@ -72,7 +72,7 @@ class ItemController {
                         fs.rmSync(pathLib.resolve(__dirname, '..', 'static', dashes[dashes.length - 1]));
                     }
 
-                    const pipeline = sharp(input).resize(200, 200, {fit: 'cover'}).toFile(pathLib.resolve(__dirname, '..', 'static', fileName + '.' + fmt));
+                    const pipeline = sharp(input).resize(200, 200, { fit: 'cover' }).toFile(pathLib.resolve(__dirname, '..', 'static', fileName + '.' + fmt));
 
                     const anotherResult = await Item.update(
                         { avatar_path: `${process.env.SERVER_URL}/${fileName}.${fmt}` },
