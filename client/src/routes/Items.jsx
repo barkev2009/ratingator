@@ -3,13 +3,13 @@ import { useItemsIntersectionObserver, useSetCookie } from '../hooks'
 import BackButton from '../common/BackButton';
 import { useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { clearItems, createItem, getAllItems, getItems, sortByRating as sortByRatingDispatch } from '../reducers/items';
+import { clearError, clearItems, createItem, getAllItems, getItems, sortByRating as sortByRatingDispatch } from '../reducers/items';
 import Item from '../components/Item';
 import { COLLECTIONS_ROUTE } from '../constants';
 import styles from '../css/Items.module.css';
 import cardStyles from '../css/Card.module.css';
 import { getCookie } from '../utils/cookies';
-import { clearError, getAttachments } from '../reducers/attachments';
+import { getAttachments } from '../reducers/attachments';
 import { getTags } from '../reducers/tags';
 import CreateTagButton from '../components/CreateTagButton';
 import CollectionTags from '../containers/CollectionTags';
@@ -25,7 +25,7 @@ const Items = () => {
     const collectionId = location.pathname.split('/')[2];
     const initialItems = useSelector(state => state.items.data);
     const userId = useSelector(state => state.user.user.id);
-    const error = useSelector(state => state.attachments.error);
+    const error = useSelector(state => state.items.error);
     const [scrollCounter, setScrollCounter] = useState(0);
     const [name, setName] = useState('');
     const [counter, setCounter] = useState(initialItems.length);

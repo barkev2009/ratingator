@@ -16,8 +16,13 @@ export const createItemAPI = async ({ name, collectionId }) => {
 }
 
 export const editItemAPI = async ({ id, name, collectionId, avatar_path, rating, order_number }) => {
-    const { data } = await $authHost.put(`api/item/${id}`, { name, collectionId, avatar_path, rating, order_number });
-    return data;
+    try {
+        const { data } = await $authHost.put(`api/item/${id}`, { name, collectionId, avatar_path, rating, order_number });
+        return { success: true, data };
+    } catch (error) {
+        return { success: false, error: error.response.data.message }
+    }
+
 }
 
 export const deleteItemAPI = async ({ id }) => {

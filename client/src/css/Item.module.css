@@ -18,6 +18,7 @@
 
 .itemName {
     cursor: pointer;
+    padding-top: 15px;
 }
 
 .trashContainer {

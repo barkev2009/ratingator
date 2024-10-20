@@ -1,10 +1,22 @@
 .thumbnail {
-    width: 40px;
-    height: 33px;
+    width: 60px;
+    height: 60px;
     border-radius: 7px;
     cursor: pointer;
     margin: 0 2px;
     object-fit: cover;
+    background-color: #505050;
+    text-align: center;
+    line-height: 1.5rem;
+}
+
+.thumbnail.bigger {
+    width: 150px;
+    height: 150px;
+}
+
+.thumbnail.bigger div {
+    padding-top: 40%;
 }
 
 .imgContainer {

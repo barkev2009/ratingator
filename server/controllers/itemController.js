@@ -53,9 +53,31 @@ class ItemController {
                 }
 
                 const result = await Item.update(
-                    { name, collectionId, avatar_path, rating, order_number },
+                    { name, collectionId, rating, order_number },
                     { where: { id } }
                 );
+
+                if (avatar_path !== null && avatar_path !== undefined) {
+                    const splits = avatar_path.split('.');
+                    const fmt = splits[splits.length - 1];
+                    if (!['jpg', 'png', 'webp', 'jpeg'].includes(fmt.toLowerCase())) {
+                        return next(ApiError.badRequest({ function: 'ItemController.edit', message: 'Формат не подходит' }));
+                    }
+                    const thumbnail = await imageThumbnail({ uri: avatar_path });
+                    const fileName = uuid.v4();
+                    if (item.avatar_path !== null) {
+                        const dashes = item.avatar_path.split('/');
+                        console.log(pathLib.resolve(__dirname, '..', 'static', dashes[dashes.length - 1]));
+                        fs.rmSync(pathLib.resolve(__dirname, '..', 'static', dashes[dashes.length - 1]));
+                    }
+
+                    fs.writeFileSync(pathLib.resolve(__dirname, '..', 'static', fileName + '.' + fmt), thumbnail);
+
+                    const anotherResult = await Item.update(
+                        { avatar_path: `${process.env.SERVER_URL}/${fileName}.${fmt}` },
+                        { where: { id } }
+                    );
+                }
 
                 const newItem = await Item.findOne({
                     where: { id },
@@ -164,69 +186,6 @@ class ItemController {
                 );
                 return res.json(item);
             }, req, res, next, 'ItemController.getItemById'
-        )
-    }
-
-    async migrateAvatars(req, res, next) {
-        tryCatchWrapper(
-            async () => {
-                let items = await Item.findAll(
-                    {
-                        include: [
-                            {
-                                model: Attachment,
-                                required: false
-                            }
-                        ]
-                    }
-                );
-                let item;
-                for (let i = 0; i < items.length; i++) {
-                    item = items[i];
-                    if (item.avatar_path === null && item.attachments.length > 0) {
-                        let path, fmt, thumbnail;
-                        for (let attIndex = 0; attIndex < item.attachments.length; attIndex++) {
-                            path = item.attachments[attIndex].path.split('?')[0];
-                            const splits = path.split('.');
-                            fmt = splits[splits.length - 1];
-                            if (['jpg', 'png', 'webp', 'jpeg'].includes(fmt.toLowerCase())) {
-                                try {
-                                    thumbnail = await imageThumbnail({ uri: path });
-                                    break;
-                                } catch (error) {
-
-                                }
-                            }
-                        }
-                        if (['jpg', 'png', 'webp', 'jpeg'].includes(fmt.toLowerCase())) {
-                            try {
-                                thumbnail = await imageThumbnail({ uri: path });
-                                const fileName = uuid.v4();
-
-                                fs.writeFileSync(pathLib.resolve(__dirname, '..', 'static', fileName + '.' + fmt), thumbnail);
-
-                                const result = await Item.update(
-                                    { avatar_path: `${process.env.SERVER_URL}/${fileName}.${fmt}` },
-                                    { where: { id: item.id } }
-                                );
-                            } catch (error) {
-                                console.log(`FAILED TO MIGRATE FOR ${item.name}`)
-                            }
-                        }
-                    }
-                }
-                items = await Item.findAll(
-                    {
-                        include: [
-                            {
-                                model: Attachment,
-                                required: false
-                            }
-                        ]
-                    }
-                );
-                return res.json(items);
-            }, req, res, next, 'ItemController.migrateAvatars'
         )
     }
 }

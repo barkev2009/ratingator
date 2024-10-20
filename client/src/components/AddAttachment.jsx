@@ -29,7 +29,7 @@ const AddAttachment = ({ itemId }) => {
                 <form onSubmit={submitHandler}>
                     <h3 style={{color: 'black'}}>Создать приложение</h3>
                     <input placeholder='URL до файла' onChange={e => setPath(e.target.value)} value={path} />
-                    <button type='submit'>CREATE</button>
+                    <button type='submit' disabled={path.trim() === ''}>CREATE</button>
                 </form>
             </Modal>
         </>

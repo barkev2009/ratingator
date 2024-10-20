@@ -4,7 +4,6 @@ const itemController = require('../controllers/itemController');
 const authMiddleware = require('../middleware/authMiddleware');
 
 router.post('/', authMiddleware, itemController.create);
-router.post('/migrate', itemController.migrateAvatars);
 router.put('/:id', authMiddleware, itemController.edit);
 router.delete('/:id', authMiddleware, itemController.delete);
 router.get('/id/:id', authMiddleware, itemController.getItemById);

@@ -2,10 +2,10 @@ import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { deleteItem } from '../reducers/items';
 import styles from '../css/Item.module.css';
+import attStyles from '../css/Attachment.module.css';
 import Modal from '../common/Modal';
 import Trash from '../svg/Trash';
 import Attachment from './Attachment';
-import AddAttachment from './AddAttachment';
 import Rating from './Rating';
 import ItemTags from '../containers/ItemTags';
 import { useNavigate } from 'react-router-dom';
@@ -29,14 +29,13 @@ const Item = ({ item }) => {
   return (
     <div className={styles.itemContainer}>
       <div className={styles.itemInfoContainer}>
-        <div onClick={clickHandler} className={styles.itemName}><b>{`${item.name}`}</b></div>
-        <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+        <div style={{ display: 'flex' }}>
           <div className={styles.attachmentsContainer}>
-            <AddAttachment itemId={item.id} />
-            {
-              attachments.filter(att => att.itemId === item.id).length > 0 && <Attachment item={item} />
-            }
+            <Attachment item={item} />
           </div>
+          <div onClick={clickHandler} className={styles.itemName}><b>{`${item.name}`}</b></div>
+        </div>
+        <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
           <div className={styles.trashContainer} onClick={() => setActive(true)}>
             <Trash />
           </div>

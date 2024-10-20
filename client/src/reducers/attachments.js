@@ -15,17 +15,13 @@ export const deleteAttachment = createAsyncThunk(
 )
 
 const initialState = {
-    data: [],
-    error: null
+    data: []
 };
 
 export const attachmentSlice = createSlice({
     name: 'attachments',
     initialState,
     reducers: {
-        clearError(state, action) {
-            state.error = null;
-        }
     },
     extraReducers: (builder) => {
         builder
@@ -36,12 +32,8 @@ export const attachmentSlice = createSlice({
             )
             .addCase(
                 createAttachment.fulfilled, (state, action) => {
-                    if (action.payload.success) {
-                        action.payload.data.collectionId = state.curCollection;
-                        state.data.push(action.payload.data);
-                    } else {
-                        state.error = JSON.stringify(action.payload.error, null, 2);
-                    }
+                    action.payload.collectionId = state.curCollection;
+                    state.data.push(action.payload);
                 }
             )
             .addCase(
@@ -63,5 +55,5 @@ export const getAttachmentsSelector = createSelector(
 );
 
 const { reducer } = attachmentSlice;
-export const { clearError } = attachmentSlice.actions;
+// export const { clearError } = attachmentSlice.actions;
 export default reducer;

@@ -6,13 +6,8 @@ export const getAttachmentsAPI = async ({ collectionId }) => {
 }
 
 export const createAttachmentAPI = async ({ path, itemId }) => {
-    try {
-        const { data } = await $authHost.post(`api/attachment`, { path, itemId });
-        return {data, success: true};
-    } catch (error) {
-        return {success: false, error: error.response.data.message}
-    }
-    
+    const { data } = await $authHost.post(`api/attachment`, { path, itemId });
+    return data;
 }
 
 export const deleteAttachmentAPI = async ({ id }) => {

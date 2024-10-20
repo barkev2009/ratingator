@@ -39,7 +39,8 @@ export const unsetTag = createAsyncThunk(
 const initialState = {
     data: [],
     total: 0,
-    ratingSort: getCookie('itemsRatingSort') || 'false'
+    ratingSort: getCookie('itemsRatingSort') || 'false',
+    error: null
 };
 
 export const itemSlice = createSlice({
@@ -57,6 +58,9 @@ export const itemSlice = createSlice({
         },
         clearItems(state, action) {
             state.data = []
+        },
+        clearError(state, action) {
+            state.error = null;
         }
     },
     extraReducers: (builder) => {
@@ -107,11 +111,16 @@ export const itemSlice = createSlice({
             )
             .addCase(
                 editItem.fulfilled, (state, action) => {
-                    state.data[state.data.map(i => i.id).indexOf(action.payload.item.id)] = action.payload.item;
-                    if (state.ratingSort === 'true') {
-                        state.data = state.data.sort((a, b) => b.rating - a.rating);
+
+                    if (action.payload.success) {
+                        state.data[state.data.map(i => i.id).indexOf(action.payload.data.item.id)] = action.payload.data.item;
+                        if (state.ratingSort === 'true') {
+                            state.data = state.data.sort((a, b) => b.rating - a.rating);
+                        } else {
+                            state.data = state.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+                        }
                     } else {
-                        state.data = state.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+                        state.error = JSON.stringify(action.payload.error, null, 2);
                     }
                 }
             )
@@ -151,5 +160,5 @@ export const itemSlice = createSlice({
 });
 
 const { reducer } = itemSlice;
-export const { sortByRating, clearItems } = itemSlice.actions;
+export const { sortByRating, clearItems, clearError } = itemSlice.actions;
 export default reducer;
