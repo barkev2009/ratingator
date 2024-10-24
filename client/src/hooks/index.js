@@ -3,13 +3,14 @@ import { useLocation } from "react-router-dom";
 import { setCookie } from "../utils/cookies";
 import styles from '../css/Items.module.css';
 import itemStyles from '../css/Item.module.css';
+import { CUR_PAGE_COOKIE } from "../constants";
 
 // Хук для установления текущей страницы, удобен при рефреше
 export const useSetCookie = () => {
     const location = useLocation();
     useEffect(
         () => {
-            setCookie('curPage', location.pathname);
+            setCookie(CUR_PAGE_COOKIE, location.pathname);
         }, []
     );
 }

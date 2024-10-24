@@ -4,3 +4,5 @@ export const MAIN_ROUTE = '/main/:id';
 export const COLLECTIONS_ROUTE = '/collections/:id';
 export const COLLECTION_ROUTE = '/collection/:id';
 export const CARD_ROUTE = '/card/:id';
+
+export const CUR_PAGE_COOKIE = 'curPage';
