@@ -3,3 +3,6 @@
 config
 *$db.drawio*
 */static
+node_modules
+refresh*
+package*
