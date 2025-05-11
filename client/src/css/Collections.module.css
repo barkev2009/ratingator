@@ -1,17 +1,73 @@
-.collectionsContainer {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    max-height: 80vh;
-    overflow-y: scroll;
+.container {
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    color: #e0e0e0;
 }
 
-.inputContainer {
-    display: flex;
-    flex-direction: row;
-    margin-bottom: 10px;
+.title {
+    color: #8a2be2;
+    margin: 1rem 0 2rem;
+    text-align: center;
+    font-size: 2rem;
 }
 
-.inputContainer input {
-    margin-left: 20px;
+.createForm {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.input {
+    flex-grow: 1;
+    padding: 0.75rem 1rem;
+    border: 1px solid #333;
+    border-radius: 8px;
+    background-color: #252525;
+    color: #e0e0e0;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.input:focus {
+    outline: none;
+    border-color: #8a2be2;
+    box-shadow: 0 0 0 2px rgba(138, 43, 226, 0.2);
+}
+
+.createButton {
+    padding: 0.75rem 1.5rem;
+    background-color: #8a2be2;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.createButton:hover {
+    background-color: #6a1b9a;
+    transform: translateY(-1px);
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1.5rem;
+    padding: 1rem;
+}
+
+@media (max-width: 900px) {
+    .grid {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    }
+
+    .createForm {
+        flex-direction: column;
+    }
 }

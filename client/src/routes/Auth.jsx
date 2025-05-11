@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { AUTH_ROUTE, MAIN_ROUTE, REGISTER_ROUTE } from '../constants';
@@ -7,11 +7,10 @@ import { setIsAuth, setUser } from '../reducers/user';
 import styles from '../css/Auth.module.css';
 
 const Auth = () => {
-
     const [login, setLogin] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState(null);
-    const [passVisible, ] = useState(false);
+    const [passVisible] = useState(false);
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -33,30 +32,51 @@ const Auth = () => {
         } catch (error) {
             setError(error.response.data.message);
         }
-
-    }
+    };
 
     return (
-        <>
-            <div className={styles.auth_container}>
-                {error && <div className={styles['alert-danger']} >{`Ошибка: ${error}`}</div>}
-                <h2>{isLogin ? 'Авторизация' : 'Регистрация'}</h2>
-                <div className={styles['form-group']}>
-                    <input type="text" placeholder='Введите логин...' className="form-control mt-4" id="login_input" onChange={e => setLogin(e.target.value)} value={login} />
-                </div>
-                <div className={styles['form-group']}>
-                    <input type={passVisible ? "text" : "password"} placeholder='Введите пароль...' className="form-control mt-4" id="password_input" onChange={e => setPassword(e.target.value)} value={password} />
-                </div>
-                <div className='mt-3' style={{ display: 'flex', justifyContent: 'space-evenly', width: '60vw' }}>
-                    {
-                        isLogin ? <div >Нет аккаунта? <NavLink to={REGISTER_ROUTE}>Зарегистрируйся!</NavLink></div>
-                            : <div >Есть аккаунт? <NavLink to={AUTH_ROUTE}>Авторизуйся!</NavLink></div>
-                    }
-                </div>
-                <button type="button" className="btn btn-outline-primary" onClick={logIn} >{isLogin ? 'Войти' : 'Регистрация'}</button>
-            </div>
-        </>
-    )
-}
+        <div className={styles.container}>
+            {error && <div className={styles.error}>{`Ошибка: ${error}`}</div>}
+            <h2 className={styles.title}>{isLogin ? 'Авторизация' : 'Регистрация'}</h2>
 
-export default Auth
+            <div className={styles.formGroup}>
+                <input
+                    type="text"
+                    placeholder="Введите логин..."
+                    className={styles.input}
+                    onChange={e => setLogin(e.target.value)}
+                    value={login}
+                />
+            </div>
+
+            <div className={styles.formGroup}>
+                <input
+                    type={passVisible ? "text" : "password"}
+                    placeholder="Введите пароль..."
+                    className={styles.input}
+                    onChange={e => setPassword(e.target.value)}
+                    value={password}
+                />
+            </div>
+
+            <button
+                type="button"
+                className={styles.button}
+                onClick={logIn}
+            >
+                {isLogin ? 'Войти' : 'Зарегистрироваться'}
+            </button>
+
+            <div className={styles.links}>
+                {isLogin ? (
+                    <div>Нет аккаунта? <NavLink to={REGISTER_ROUTE} className={styles.link}>Зарегистрируйся!</NavLink></div>
+                ) : (
+                    <div>Есть аккаунт? <NavLink to={AUTH_ROUTE} className={styles.link}>Авторизуйся!</NavLink></div>
+                )}
+            </div>
+
+        </div>
+    );
+};
+
+export default Auth;

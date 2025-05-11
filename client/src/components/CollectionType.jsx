@@ -6,7 +6,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setCurType } from '../reducers/collections';
 
 const CollectionType = ({ collectionType }) => {
-
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const user = useSelector(state => state.user.user);
@@ -14,13 +13,13 @@ const CollectionType = ({ collectionType }) => {
     const clickHandler = () => {
         navigate(COLLECTIONS_ROUTE.replace(':id', user.id));
         dispatch(setCurType(collectionType.id));
-    }
+    };
 
     return (
-        <div className={styles.collectionType} onClick={clickHandler}>
-            {collectionType.name}
+        <div className={styles.card} onClick={clickHandler}>
+            <h3 className={styles.name}>{collectionType.name}</h3>
         </div>
-    )
-}
+    );
+};
 
-export default CollectionType
+export default CollectionType;

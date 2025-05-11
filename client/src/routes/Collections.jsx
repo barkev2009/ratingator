@@ -9,7 +9,6 @@ import { MAIN_ROUTE } from '../constants';
 import styles from '../css/Collections.module.css';
 
 const Collections = () => {
-
     useSetCookie();
 
     const dispatch = useDispatch();
@@ -18,38 +17,47 @@ const Collections = () => {
     const collectionTypeId = getCookie('curType');
     const [name, setName] = useState('');
 
-    const sumbitHandler = (e) => {
+    const submitHandler = (e) => {
         e.preventDefault();
-        if (name !== '') {
+        if (name.trim() !== '') {
             dispatch(createCollection({ name, collectionTypeId, userId }));
             setName('');
         }
-    }
+    };
 
-    useEffect(
-        () => {
-            if (collectionTypeId && userId) {
-                dispatch(getCollections({ collectionTypeId, userId }));
-            }
-        }, []
-    );
+    useEffect(() => {
+        if (collectionTypeId && userId) {
+            dispatch(getCollections({ collectionTypeId, userId }));
+        }
+    }, [collectionTypeId, userId, dispatch]);
 
     return (
-        <div>
+        <div className={styles.container}>
             <BackButton route={MAIN_ROUTE.replace(':id', userId)} />
-            <form onSubmit={sumbitHandler} className={styles.inputContainer}>
-                <button type='submit'>CREATE</button>
-                <input value={name} onChange={e => setName(e.target.value)} />
+
+            <h1 className={styles.title}>Мои коллекции</h1>
+
+            <form onSubmit={submitHandler} className={styles.createForm}>
+                <input
+                    type="text"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    placeholder="Название коллекции"
+                    className={styles.input}
+                    maxLength={50}
+                />
+                <button type="submit" className={styles.createButton}>
+                    Создать
+                </button>
             </form>
-            <div className={styles.collectionsContainer}>
-                {
-                    collections.map(
-                        item => <Collection key={item.id} collection={item} />
-                    )
-                }
+
+            <div className={styles.grid}>
+                {collections.map(item => (
+                    <Collection key={item.id} collection={item} />
+                ))}
             </div>
         </div>
-    )
-}
+    );
+};
 
-export default Collections
+export default Collections;

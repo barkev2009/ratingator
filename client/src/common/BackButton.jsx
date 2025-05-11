@@ -1,20 +1,22 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from '../css/BackButton.module.css';
-import ArrowBack from '../svg/ArrowBack';
 
-const BackButton = ({ route }) => {
-
+const BackButton = ({ route, label = 'Назад' }) => {
     const navigate = useNavigate();
-    const clickHandler = () => {
-        navigate(route);
-    }
 
     return (
-        <div onClick={clickHandler} className={styles.buttonContainer}>
-            <ArrowBack />
-        </div>
-    )
-}
+        <button
+            onClick={() => navigate(route)}
+            className={styles.backButton}
+            aria-label={label}
+        >
+            <div className={styles.arrowWrapper}>
+                <span className={styles.arrow}></span>
+            </div>
+            <span className={styles.text}>{label}</span>
+        </button>
+    );
+};
 
-export default BackButton
+export default BackButton;
