@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect } from 'react';
 import './css/App.css';
 import { BrowserRouter } from 'react-router-dom';
-import AppRouter from './routes/AppRouter';
+import AppRouter from './AppRouter';
 import { useDispatch } from 'react-redux';
 import { check } from './api/user';
 import { setIsAuth, setUser } from './reducers/user';

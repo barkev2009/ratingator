@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { Navigate, Route, Routes, useNavigate } from 'react-router-dom';
-import { authRoutes, publicRoutes } from './routes';
-import { AUTH_ROUTE, CUR_PAGE_COOKIE } from '../constants';
-import { getCookie } from '../utils/cookies';
+import { authRoutes, publicRoutes } from './routes/routes';
+import { AUTH_ROUTE, CUR_PAGE_COOKIE } from './constants';
+import { getCookie } from './utils/cookies';
 
 const AppRouter = () => {
 
