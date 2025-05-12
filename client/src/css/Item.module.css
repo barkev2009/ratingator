@@ -1,4 +1,5 @@
-.itemInfoContainer, .choiceButtons {
+.itemInfoContainer,
+.choiceButtons {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -8,6 +9,7 @@
     border-bottom: 1px solid #505050;
     width: 100%;
 }
+
 .itemInfoContainer {
     height: 70px;
     align-items: center;
@@ -43,7 +45,7 @@
     margin: 0 5px;
 }
 
-form + .addAttachment {
+form+.addAttachment {
     display: inline-block;
 }
 
@@ -51,4 +53,70 @@ form + .addAttachment {
     width: 25px;
     margin-left: 7px;
     margin-top: 2px;
+}
+
+
+.deleteTitle {
+    color: #ff4d4f;
+    margin: 0 0 1rem 0;
+    font-size: 1.2rem;
+}
+
+.deleteWarning {
+    color: #b0b0b0;
+    margin: 0 0 1.5rem 0;
+    font-size: 0.9rem;
+}
+
+.deleteButtons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+}
+
+.deleteButton {
+    padding: 0.6rem 1.5rem;
+    background-color: #ff4d4f;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.deleteButton:hover {
+    background-color: #ff7875;
+    transform: translateY(-1px);
+}
+
+.cancelButton {
+    padding: 0.6rem 1.5rem;
+    background-color: #333;
+    color: #e0e0e0;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.cancelButton:hover {
+    background-color: #444;
+    transform: translateY(-1px);
+}
+
+/* Мобильная адаптация */
+@media (max-width: 576px) {
+
+    .deleteButtons {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .deleteButton,
+    .cancelButton {
+        width: 100%;
+        padding: 0.7rem;
+    }
 }

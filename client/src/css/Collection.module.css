@@ -1,25 +1,150 @@
-.collectionContainer, .choiceButtons {
+.card {
+    position: relative;
+    background-color: #1e1e1e;
+    border: 1px solid #333;
+    border-radius: 12px;
+    padding: 1.5rem;
+    transition: all 0.3s ease;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.card:hover {
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+    border-color: #8a2be2;
+}
+
+.content {
+    padding-right: 2rem;
+}
+
+.name {
+    color: #e0e0e0;
+    font-size: 1.2rem;
+    margin: 0;
+    word-break: break-word;
+}
+
+.deleteButton {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+}
+
+.deleteButton svg {
+    width: 1.5rem;
+}
+
+.deleteButton:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.trashIcon {
+    width: 18px;
+    height: 18px;
+    fill: #ff4d4f;
+    transition: fill 0.2s ease;
+}
+
+.deleteButton:hover .trashIcon {
+    fill: #ff7875;
+}
+
+.modalContent {
+    color: #333;
+    padding: 1.5rem;
+    text-align: center;
+}
+
+.modalContent h3 {
+    margin-top: 0;
+    color: #8a2be2;
+}
+
+.buttons {
     display: flex;
-    flex-direction: row;
-    justify-content: space-between;
+    gap: 1rem;
+    justify-content: center;
+    margin-top: 1.5rem;
 }
 
-.collectionContainer {
-    margin-bottom: 10px;
-    border: 1px solid #b0b0b0;
-    border-radius: 10px;
-    width: 80%;
-    height: 50px;
-    align-items: center;
-    padding: 5px;
-    flex-shrink: 0;
-}
-
-.collectionName {
+.confirmButton {
+    padding: 0.5rem 1.5rem;
+    background-color: #ff4d4f;
+    color: white;
+    border: none;
+    border-radius: 6px;
     cursor: pointer;
+    transition: all 0.2s ease;
 }
 
-.trashContainer {
-    width: 30px;
+.confirmButton:hover {
+    background-color: #ff7875;
+}
+
+.cancelButton {
+    padding: 0.5rem 1.5rem;
+    background-color: #f0f0f0;
+    color: #333;
+    border: none;
+    border-radius: 6px;
     cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.cancelButton:hover {
+    background-color: #d9d9d9;
+}
+
+/* Стили для контента модального окна */
+.modalTitle {
+    color: #8a2be2;
+    margin-top: 0;
+    text-align: center;
+}
+
+.modalText {
+    color: #e0e0e0;
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.modalButtons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+}
+
+.modalConfirm {
+    padding: 0.5rem 1.5rem;
+    background-color: #ff4d4f;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.modalConfirm:hover {
+    background-color: #ff7875;
+}
+
+.modalCancel {
+    padding: 0.5rem 1.5rem;
+    background-color: #333;
+    color: #e0e0e0;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.modalCancel:hover {
+    background-color: #444;
 }

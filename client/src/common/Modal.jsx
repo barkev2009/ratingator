@@ -1,15 +1,35 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styles from '../css/Modal.module.css';
 
-const Modal = ({active, setActive, children}) => {
+const Modal = ({ active, setActive, children }) => {
+  // Блокируем скролл при открытом модальном окне
+  useEffect(() => {
+    if (active) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
 
-    return (
-      <div className={active ? `${styles.modal} ${styles.mActive}` : styles.modal} onClick={() => setActive(false)}>
-          <div className={active ? `${styles.modalContent} ${styles.mcActive}` : styles.modalContent} onClick={e => e.stopPropagation()}>
-            {children}
-          </div>
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [active]);
+
+  if (!active) return null;
+
+  return (
+    <div
+      className={styles.modalOverlay}
+      onClick={() => setActive(false)}
+    >
+      <div
+        className={styles.modalContent}
+        onClick={e => e.stopPropagation()}
+      >
+        {children}
       </div>
-    )
-  }
+    </div>
+  );
+};
 
-export default Modal
+export default Modal;

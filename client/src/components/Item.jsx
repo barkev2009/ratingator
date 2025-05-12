@@ -40,10 +40,21 @@ const Item = ({ item }) => {
           <Rating item={item} />
         </div>
         <Modal active={active} setActive={setActive}>
-          <h3 style={{ color: 'black' }}>Точно удалить пункт коллекции?</h3>
-          <div className={styles.choiceButtons}>
-            <button onClick={deleteHandler}>Да</button>
-            <button onClick={() => setActive(false)}>Нет</button>
+          <h3 className={styles.deleteTitle}>Удалить пункт коллекции?</h3>
+          <p className={styles.deleteWarning}>Это действие нельзя будет отменить</p>
+          <div className={styles.deleteButtons}>
+            <button
+              className={styles.deleteButton}
+              onClick={deleteHandler}
+            >
+              Удалить
+            </button>
+            <button
+              className={styles.cancelButton}
+              onClick={() => setActive(false)}
+            >
+              Отмена
+            </button>
           </div>
         </Modal>
       </div>

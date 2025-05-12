@@ -1,5 +1,4 @@
 import React from 'react'
-import { useSelector } from 'react-redux';
 import styles from '../css/Tag.module.css';
 import Tag from '../components/Tag';
 

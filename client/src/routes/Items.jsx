@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useItemsIntersectionObserver, useSetCookie } from '../hooks'
+import { useSetCookie } from '../hooks'
 import BackButton from '../common/BackButton';
 import { useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -13,20 +13,17 @@ import { getAttachments } from '../reducers/attachments';
 import { getTags } from '../reducers/tags';
 import CreateTagButton from '../components/CreateTagButton';
 import CollectionTags from '../containers/CollectionTags';
-import { getItemsAPI } from '../api/items';
 
 const Items = () => {
 
     useSetCookie();
 
-    const LIMIT = 10;
     const location = useLocation();
     const dispatch = useDispatch();
     const collectionId = location.pathname.split('/')[2];
     const initialItems = useSelector(state => state.items.data);
     const userId = useSelector(state => state.user.user.id);
     const error = useSelector(state => state.items.error);
-    const [scrollCounter, setScrollCounter] = useState(0);
     const [name, setName] = useState('');
     const [counter, setCounter] = useState(initialItems.length);
     const total = useSelector(state => state.items.total);
@@ -35,7 +32,7 @@ const Items = () => {
     const tags = useSelector(state => state.tags.data);
     const [filterTags, setFilterTags] = useState(tags.filter(item => item.active));
 
-    const sumbitHandler = (e) => {
+    const submitHandler = (e) => {
         e.preventDefault();
         if (name !== '') {
             dispatch(createItem({ name, collectionId }));
@@ -48,27 +45,14 @@ const Items = () => {
     const toggleRatingSort = () => {
         dispatch(sortByRatingDispatch(sortByRating === 'true' ? 'false' : 'true'));
         setSortByRating(sortByRating === 'true' ? 'false' : 'true');
-        setScrollCounter(0);
         dispatch(clearItems());
         dispatch(getItems({ collectionId, sortByRating: sortByRating === 'true' ? 'false' : 'true' }));
     }
 
-    // useItemsIntersectionObserver(setScrollCounter, LIMIT * scrollCounter, total);
-    // useEffect(
-    //     () => {
-    //         if (scrollCounter >= 0) {
-    //             console.log('COUNTER CHANGED: ' + scrollCounter);
-    //             if (LIMIT * scrollCounter < total) {
-    //                 dispatch(getItems({ collectionId, limit: LIMIT, offset: LIMIT * scrollCounter, sortByRating }));
-    //             }
-    //         }
-    //     }, [scrollCounter]
-    // );
     useEffect(
         () => {
             if (collectionId) {
                 dispatch(getItems({ collectionId, sortByRating }));
-                // dispatch(getItems({ collectionId, limit: LIMIT, offset: LIMIT * scrollCounter, sortByRating }));
                 dispatch(getAllItems({ collectionId }));
             }
         }, []
@@ -104,10 +88,6 @@ const Items = () => {
     useEffect(
         () => {
             if (filterTags.length > 0) {
-                // setScrollCounter(-1);
-                // getItemsAPI({ collectionId, tags: filterTags.map(i => i.id) }).then(
-                //     resp => { console.log(resp); setItems(resp) }
-                // )
                 setItems(
                     initialItems.filter(
                         item =>
@@ -119,7 +99,6 @@ const Items = () => {
                 );
             } else {
                 setItems(initialItems);
-                // setScrollCounter(0);
             }
         }, [filterTags, initialItems]
     );
@@ -130,20 +109,38 @@ const Items = () => {
             }
         }, [error]
     );
-    
+
 
     return (
         <div>
             <div className={styles.upperContainer}>
-                <BackButton route={COLLECTIONS_ROUTE.replace(':id', userId)} />
+
                 {error !== null && <pre className={cardStyles.error}>{error}</pre>}
-                <form onSubmit={sumbitHandler} className={styles.inputContainer}>
-                    <button type='submit'>CREATE</button>
-                    <input style={{ width: "70%", backgroundColor: '#b0b0b0' }} value={name} onChange={inputHandler} />
-                    <div style={{ marginLeft: '10px', top: '7px', position: 'relative', marginBottom: '10px' }}>{`Пунктов: ${counter} / ${total}`}</div>
-                    <div style={{ display: 'flex', justifyContent: 'space-around' }}>
-                        <div className={styles.ratingSort} style={{ borderColor: sortByRating === 'true' ? 'green' : 'red' }} onClick={toggleRatingSort}>Sort by rating</div>
-                        <CreateTagButton />
+                <form onSubmit={submitHandler} className={styles.formContainer}>
+                    <BackButton route={COLLECTIONS_ROUTE.replace(':id', userId)} />
+                    <div className={styles.topRow}>
+                        <input
+                            type="text"
+                            value={name}
+                            onChange={inputHandler}
+                            placeholder="Название..."
+                            className={styles.inputField}
+                        />
+                        <button type="submit" className={styles.createButton}>+</button>
+                    </div>
+
+                    <div className={styles.bottomRow}>
+                        <div className={styles.counter}>
+                            {counter} / {total}
+                        </div>
+                        <button
+                            type="button"
+                            className={`${styles.sortButton} ${sortByRating === 'true' ? styles.activeSort : ''}`}
+                            onClick={toggleRatingSort}
+                        >
+                            <span className={styles.sortIcon}>↑↓</span> Рейтинг
+                        </button>
+                        <CreateTagButton className={styles.tagButton} />
                     </div>
                 </form>
                 <CollectionTags />

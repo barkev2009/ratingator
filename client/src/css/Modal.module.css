@@ -1,37 +1,58 @@
-.modal {
-    height: 100%;
-    width: 100%;
-    background-color: rgba(0, 0, 0, 0.8);
+.modalOverlay {
     position: fixed;
     top: 0;
     left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.7);
     display: flex;
-    align-items: center;
     justify-content: center;
-    opacity: 0;
-    pointer-events: none;
-    transition: 0.5s;
-    z-index: 1;
-}
-
-.mActive {
-    opacity: 1;
-    pointer-events: all;
-}
-
-.modalContent {
-    padding: 20px;
+    align-items: center;
+    z-index: 1000;
+    backdrop-filter: blur(4px);
+    animation: fadeIn 0.3s ease;
+    height: 100vh;
+  }
+  
+  .modalContent {
+    background-color: #1e1e1e;
     border-radius: 12px;
-    background-color: #bdbdbd;
-    transform: scale(0.5);
-    transition: 0.4s all;
-    max-width: 1000px;
-    width: 80vw;
-    height: fit-content;
-    max-height: 80vh;
-    border: 1px solid #121212;
-}
-
-.mcActive {
-    transform: scale(1);
-}
+    padding: 2rem;
+    max-width: 500px;
+    width: 90%;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    border: 1px solid #333;
+    animation: slideUp 0.3s ease;
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  
+  @keyframes slideUp {
+    from { 
+      transform: translateY(20px);
+      opacity: 0.8;
+    }
+    to { 
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+  
+  /* Для светлой темы (если нужно) */
+  .modalContent.light {
+    background-color: #ffffff;
+    color: #333;
+  }
+  
+  /* Адаптация для мобильных */
+  @media (max-width: 768px) {
+    .modalContent {
+      padding: 1.5rem;
+      width: 95%;
+    }
+  }

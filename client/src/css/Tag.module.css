@@ -1,13 +1,31 @@
-.tagContainer {
-    border-top: 1px solid #505050;
-    padding: 5px 10px;
+.tag {
+    display: inline-block;
+    padding: 0.25rem 0.6rem;
+    border: 1px solid;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    background-color: transparent;
+    line-height: 1.3;
+    margin: 0;
+    white-space: nowrap;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
-.tag {
-    padding: 0 5px;
-    margin: 2px 2px;
-    font-weight: bold;
-    display: inline-block;
-    cursor: pointer;
-    opacity: .6;
+.tag:hover {
+    transform: translateY(-1px);
+    opacity: 0.9;
+}
+
+/* Микро-анимация при клике */
+.tag:active {
+    transform: scale(0.98);
+}
+
+.tagContainer {
+    padding-top: .3rem;
+    border-top: 1px solid #505050;
 }

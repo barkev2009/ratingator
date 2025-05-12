@@ -49,12 +49,12 @@ export const itemSlice = createSlice({
     reducers: {
         sortByRating(state, action) {
             setCookie('itemsRatingSort', String(action.payload));
-            // state.ratingSort = action.payload;
-            // if (action.payload === 'true') {
-            //     state.data = state.data.sort((a, b) => b.rating - a.rating);
-            // } else {
-            //     state.data = state.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-            // }
+            state.ratingSort = action.payload;
+            if (action.payload === 'true') {
+                state.data = state.data.sort((a, b) => b.rating - a.rating);
+            } else {
+                state.data = state.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+            }
         },
         clearItems(state, action) {
             state.data = []
@@ -128,6 +128,7 @@ export const itemSlice = createSlice({
                 deleteItem.fulfilled, (state, action) => {
                     if (action.payload.result === 1) {
                         state.data = state.data.filter(item => item.id !== action.payload.item.id);
+                        state.total = state.data.length;
                     }
                     if (state.ratingSort === 'true') {
                         state.data = state.data.sort((a, b) => b.rating - a.rating);

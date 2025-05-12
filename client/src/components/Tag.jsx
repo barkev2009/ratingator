@@ -5,8 +5,8 @@ import { toggleFilterTags } from '../reducers/tags';
 import { setTag, unsetTag } from '../reducers/items';
 
 const Tag = ({ tag, item, control, set }) => {
-
     const dispatch = useDispatch();
+
     const clickHandler = () => {
         if (!item) {
             dispatch(toggleFilterTags(tag.id));
@@ -18,32 +18,40 @@ const Tag = ({ tag, item, control, set }) => {
                 dispatch(setTag({ tagId: tag.id, itemId: item.id }));
             }
         }
-    }
+    };
 
-    const styleHandler = (item) => {
+    const getTagStyle = () => {
+        const baseStyle = {
+            backgroundColor: tag.active ? `${tag.color}20` : 'transparent',
+            borderColor: tag.active ? tag.color : 'gray',
+            color: tag.active ? tag.color : 'gray'
+        };
+
         if (item) {
             if (!control) {
-                return ({ color: 'white', backgroundColor: tag.color, borderRadius: '5px' })
-            } else {
-                if (set) {
-                    return ({ color: tag.color, border: `1px solid ${tag.color}`, borderRadius: '5px' });
-                }
-                return ({ color: 'gray', border: `1px solid gray`, borderRadius: '5px' });
+                return {
+                    backgroundColor: tag.color,
+                    color: '#121212'
+                };
             }
-        } else {
-            if (tag.active) {
-                return ({ color: tag.color, border: `1px solid ${tag.color}`, borderRadius: '5px' });
-            }
-            return ({ color: 'gray', border: `1px solid gray`, borderRadius: '5px' });
+            return {
+                borderColor: set ? tag.color : 'gray',
+                color: set ? tag.color : 'gray'
+            };
         }
-
-    }
+        return baseStyle;
+    };
 
     return (
-        <span onClick={clickHandler} className={styles.tag} style={styleHandler(item)}>
+        <span
+            onClick={clickHandler}
+            className={styles.tag}
+            style={getTagStyle()}
+            title={tag.name}
+        >
             {tag.name}
         </span>
-    )
-}
+    );
+};
 
-export default Tag
+export default Tag;

@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
 import Modal from '../common/Modal';
-import styles from '../css/Items.module.css';
+import styles from '../css/CreateTagButton.module.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { createTag } from '../reducers/tags';
 import { useLocation } from 'react-router-dom';
 
-const CreateTagButton = () => {
-
+const CreateTagButton = ({ className }) => {
   const [active, setActive] = useState(false);
   const [name, setName] = useState('');
   const dispatch = useDispatch();
@@ -14,26 +13,55 @@ const CreateTagButton = () => {
   const location = useLocation();
   const collectionId = location.pathname.split('/')[2];
 
-  const clickHandler = () => {
-    if (name !== '' && !tags.map(item => item.name).includes(name)) {
-      dispatch(createTag({name, collectionId}))
+  const clickHandler = (e) => {
+    e.preventDefault();
+    if (name.trim() !== '' && !tags.some(tag => tag.name === name.trim())) {
+      dispatch(createTag({ name: name.trim(), collectionId }));
       setActive(false);
       setName('');
     }
-  }
+  };
 
   return (
-    <div>
-      <div className={styles.createTag} onClick={() => setActive(!active)}>Create tag</div>
-      <Modal active={active} setActive={setActive} >
-        <div>
-          <h3 style={{color: 'black'}}>Создать тэг</h3>
-          <input placeholder='Название тэга' onChange={e => setName(e.target.value.toLowerCase())} value={name} />
-          <button onClick={clickHandler} type='submit'>CREATE</button>
+    <>
+      <button
+        onClick={() => setActive(true)}
+        className={`${styles.button} ${className || ''}`}
+        aria-label="Создать тег"
+      >
+        + Тег
+      </button>
+
+      <Modal active={active} setActive={setActive}>
+        <div className={styles.modalContent}>
+          <h3 className={styles.modalTitle}>Создать тег</h3>
+          <input
+            type="text"
+            placeholder="Введите название тега"
+            className={styles.modalInput}
+            onChange={(e) => setName(e.target.value.toLowerCase())}
+            value={name}
+            autoFocus
+          />
+          <div className={styles.modalButtons}>
+            <button
+              onClick={clickHandler}
+              className={styles.submitButton}
+              disabled={!name.trim() || tags.some(tag => tag.name === name.trim())}
+            >
+              Создать
+            </button>
+            <button
+              onClick={() => setActive(false)}
+              className={styles.cancelButton}
+            >
+              Отмена
+            </button>
+          </div>
         </div>
       </Modal>
-    </div>
-  )
-}
+    </>
+  );
+};
 
-export default CreateTagButton
+export default CreateTagButton;
