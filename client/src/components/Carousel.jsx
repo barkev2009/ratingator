@@ -2,95 +2,171 @@ import React, { useEffect, useRef, useState } from 'react';
 import styles from '../css/Carousel.module.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { deleteAttachment, getAttachmentsSelector } from '../reducers/attachments';
-import Trash from '../svg/Trash';
+import TrashIcon from '../svg/Trash';
+import ArrowLeft from '../svg/ArrowLeft';
+import ArrowRight from '../svg/ArrowRight';
 import Modal from '../common/Modal';
 
 const Carousel = ({ itemId }) => {
-
     const carouselItems = useSelector(state => getAttachmentsSelector(state, itemId));
-    const currentIndex = useRef(0);
-    const [marker, setMarker] = useState(0);
+    const [currentIndex, setCurrentIndex] = useState(0);
+    const [touchStart, setTouchStart] = useState(null);
+    const [touchEnd, setTouchEnd] = useState(null);
     const [active, setActive] = useState(false);
     const [attachmentId, setAttachmentId] = useState(null);
-
-    useEffect(
-        () => {
-            document.getElementById(itemId).querySelector('.' + styles['carousel-inner']).style.width = `${carouselItems.length * 100}%`;
-        }, [carouselItems]
-    );
-
-    function goToSlide(index) {
-        const carouselItems = document.getElementById(itemId).querySelectorAll('.' + styles['carousel-item']);
-        if (index < 0) {
-            index = carouselItems.length - 1;
-        } else if (index >= carouselItems.length) {
-            index = 0;
-        }
-        currentIndex.current = index;
-        const width = document.getElementById(itemId).querySelector('.' + styles['carousel-item']).clientWidth;
-        document.getElementById(itemId).querySelector('.' + styles['carousel-inner']).style.transform = `translateX(-${currentIndex.current * width}px)`;
-        setMarker(currentIndex.current);
-    }
-
-    function goToNextSlide() {
-        goToSlide(currentIndex.current + 1);
-    }
-
-    function goToPrevSlide() {
-        goToSlide(currentIndex.current - 1);
-    }
-
-    function markerHandler(index) {
-        return function () {
-            currentIndex.current = index;
-            goToSlide(index);
-        }
-    }
+    const carouselRef = useRef(null);
+    const innerRef = useRef(null);
 
     const dispatch = useDispatch();
+
+    // Инициализация карусели
+    useEffect(() => {
+        if (innerRef.current && carouselItems.length > 0) {
+            goToSlide(0);
+        }
+    }, []);
+
+    // Обработчик свайпа
+    const handleTouchStart = (e) => {
+        setTouchStart(e.targetTouches[0].clientX);
+    };
+
+    const handleTouchMove = (e) => {
+        setTouchEnd(e.targetTouches[0].clientX);
+    };
+
+    const handleTouchEnd = () => {
+        if (!touchStart || !touchEnd) return;
+
+        const diff = touchStart - touchEnd;
+        if (diff > 5) {
+            goToNextSlide(); // Свайп влево
+        } else if (diff < -5) {
+            goToPrevSlide(); // Свайп вправо
+        }
+
+        setTouchStart(null);
+        setTouchEnd(null);
+    };
+
+    // Навигация по слайдам
+    const goToSlide = (index) => {
+        if (carouselItems.length === 0) return;
+
+        let newIndex = index;
+        if (index < 0) {
+            newIndex = carouselItems.length - 1;
+        } else if (index >= carouselItems.length) {
+            newIndex = 0;
+        }
+
+        setCurrentIndex(newIndex);
+        const width = carouselRef.current.clientWidth;
+        innerRef.current.style.transform = `translateX(-${newIndex * width}px)`;
+    };
+
+    const goToNextSlide = () => goToSlide(currentIndex + 1);
+    const goToPrevSlide = () => goToSlide(currentIndex - 1);
+
+    // Удаление изображения
     const deleteHandler = () => {
         if (attachmentId) {
-            dispatch(deleteAttachment({id: attachmentId}));
+            dispatch(deleteAttachment({ id: attachmentId }));
         }
-        setAttachmentId(null);
         setActive(false);
-    }
-
-    // window.addEventListener('resize', function () {
-    //     goToPrevSlide();
-    //     goToNextSlide();
-    // }, true);
+        // После удаления переходим на предыдущий слайд
+        if (currentIndex >= carouselItems.length - 1) {
+            goToPrevSlide();
+        }
+    };
 
     return (
-        <div id={itemId} className={styles.carousel_container}>
-            <div className={styles.carousel}>
-                <div className={styles['carousel-inner']}>
-                    {
-                        carouselItems.map(
-                            (item, idx) => <div id={`c${idx + 1}`} key={idx} className={styles['carousel-item']}>
-                                <img src={item.path} alt="" />
-                                <Trash onClick={() => {setAttachmentId(item.id); setActive(true)}} />
-                            </div>
-                        )
-                    }
+        <div className={styles.carouselContainer}>
+            <div
+                ref={carouselRef}
+                className={styles.carousel}
+                onTouchStart={handleTouchStart}
+                onTouchMove={handleTouchMove}
+                onTouchEnd={handleTouchEnd}
+            >
+                <div ref={innerRef} className={styles.carouselInner}>
+                    {carouselItems.map((item, idx) => (
+                        <div key={idx} className={styles.carouselItem}>
+                            <img
+                                src={item.path}
+                                alt={`Изображение ${idx + 1}`}
+                                className={styles.carouselImage}
+                            />
+                            <button
+                                className={styles.deleteButton}
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    setAttachmentId(item.id);
+                                    setActive(true);
+                                }}
+                                aria-label="Удалить изображение"
+                            >
+                                <TrashIcon className={styles.trashIcon} />
+                            </button>
+                        </div>
+                    ))}
                 </div>
+
+                {carouselItems.length > 1 && (
+                    <>
+                        <button
+                            className={`${styles.carouselBtn} ${styles.leftBtn}`}
+                            onClick={goToPrevSlide}
+                            aria-label="Предыдущее изображение"
+                        >
+                            <ArrowLeft className={styles.arrowIcon} />
+                        </button>
+                        <button
+                            className={`${styles.carouselBtn} ${styles.rightBtn}`}
+                            onClick={goToNextSlide}
+                            aria-label="Следующее изображение"
+                        >
+                            <ArrowRight className={styles.arrowIcon} />
+                        </button>
+                    </>
+                )}
             </div>
-            <div className={styles['carousel-marker_container']}>
-                {
-                    carouselItems.map((item, idx) => <div className={`${styles['carousel-marker']} ${marker === idx ? styles.active : ''}`} onClick={markerHandler(idx)} key={idx}></div>)
-                }
-            </div>
-            <button className={[styles.carousel_btn, styles.left].join(' ')} onClick={goToPrevSlide}>{'<'}</button>
-            <button className={[styles.carousel_btn, styles.right].join(' ')} onClick={goToNextSlide}>{'>'}</button>
+
+            {carouselItems.length > 1 && (
+                <div className={styles.markersContainer}>
+                    {carouselItems.map((_, idx) => (
+                        <button
+                            key={idx}
+                            className={`${styles.marker} ${currentIndex === idx ? styles.activeMarker : ''}`}
+                            onClick={() => goToSlide(idx)}
+                            aria-label={`Перейти к изображению ${idx + 1}`}
+                        />
+                    ))}
+                </div>
+            )}
+
             <Modal active={active} setActive={setActive}>
-                <h3 style={{ color: 'black' }}>Точно удалить изображение?</h3>
-                <div>
-                    <button onClick={deleteHandler}>Да</button>
-                    <button onClick={() => setActive(false)}>Нет</button>
+                <div className={styles.modalContent}>
+                    <h3 className={styles.modalTitle}>Удалить изображение?</h3>
+                    <p className={styles.modalText}>Это действие нельзя отменить</p>
+                    <div className={styles.modalButtons}>
+                        <button
+                            className={styles.confirmButton}
+                            onClick={deleteHandler}
+                        >
+                            Удалить
+                        </button>
+                        <button
+                            className={styles.cancelButton}
+                            onClick={() => setActive(false)}
+                        >
+                            Отмена
+                        </button>
+                    </div>
                 </div>
             </Modal>
         </div>
-    )
-}
+    );
+};
 
-export default Carousel
+export default Carousel;

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import styles from '../css/Item.module.css';
+import styles from '../css/AddAttachment.module.css';
 import Modal from '../common/Modal';
 import { useDispatch } from 'react-redux';
 import { createAttachment } from '../reducers/attachments';
@@ -26,10 +26,24 @@ const AddAttachment = ({ itemId }) => {
                 <Plus />
             </div>
             <Modal active={active} setActive={setActive}>
-                <form onSubmit={submitHandler}>
-                    <h3 style={{color: 'black'}}>Создать приложение</h3>
-                    <input placeholder='URL до файла' onChange={e => setPath(e.target.value)} value={path} />
-                    <button type='submit' disabled={path.trim() === ''}>CREATE</button>
+                <form onSubmit={submitHandler} className={styles.form}>
+                    <h3 className={styles.formTitle}>Создать приложение</h3>
+                    <div className={styles.inputGroup}>
+                        <input
+                            type="text"
+                            placeholder="Введите URL до файла"
+                            className={styles.input}
+                            onChange={e => setPath(e.target.value)}
+                            value={path}
+                        />
+                        <button
+                            type="submit"
+                            className={styles.submitButton}
+                            disabled={path.trim() === ''}
+                        >
+                            Создать
+                        </button>
+                    </div>
                 </form>
             </Modal>
         </>
