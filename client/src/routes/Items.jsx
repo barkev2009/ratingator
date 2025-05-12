@@ -7,7 +7,6 @@ import { clearError, clearItems, createItem, getAllItems, getItems, sortByRating
 import Item from '../components/Item';
 import { COLLECTIONS_ROUTE } from '../constants';
 import styles from '../css/Items.module.css';
-import cardStyles from '../css/Card.module.css';
 import { getCookie } from '../utils/cookies';
 import { getAttachments } from '../reducers/attachments';
 import { getTags } from '../reducers/tags';
