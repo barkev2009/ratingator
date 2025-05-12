@@ -13,6 +13,7 @@ import { getAttachments } from '../reducers/attachments';
 import { getTags } from '../reducers/tags';
 import CreateTagButton from '../components/CreateTagButton';
 import CollectionTags from '../containers/CollectionTags';
+import Error from '../common/Error';
 
 const Items = () => {
 
@@ -115,7 +116,7 @@ const Items = () => {
         <div>
             <div className={styles.upperContainer}>
 
-                {error !== null && <pre className={cardStyles.error}>{error}</pre>}
+                {error !== null && <Error error={error} />}
                 <form onSubmit={submitHandler} className={styles.formContainer}>
                     <BackButton route={COLLECTIONS_ROUTE.replace(':id', userId)} />
                     <div className={styles.topRow}>

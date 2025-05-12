@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Modal from '../common/Modal';
 import styles from '../css/Attachment.module.css';
-import Carousel from './Carousel';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAttachmentsSelector } from '../reducers/attachments';
 import { editItem } from '../reducers/items';
@@ -17,7 +16,7 @@ const Attachment = ({ item }) => {
 
     const submitHandler = (e) => {
         e.preventDefault();
-        dispatch(editItem({id: item.id, avatar_path: path}));
+        dispatch(editItem({ id: item.id, avatar_path: path }));
         setActive(false);
         setLoading(true);
         setPath('');
@@ -38,20 +37,46 @@ const Attachment = ({ item }) => {
     return (
         <div style={{ display: 'flex', position: 'relative' }}>
             {
-                attachments.filter(att => att.itemId === item.id).length > 0 ?
+                !!item.avatar_path ?
                     <img onClick={() => setActive(true)} className={styles.thumbnail} src={item.avatar_path} alt={`${item.name} avatar`} /> :
                     <div onClick={() => setActive(true)} className={styles.thumbnail}>No image</div>
             }
             {loading && <div className={styles.loader}><div className={styles.spinner}></div></div>}
             <span className={styles.pic_count}>{attachments.length}</span>
             <Modal active={active} setActive={setActive}>
-                <form onSubmit={submitHandler}>
-                    {
-                        attachments.filter(att => att.itemId === item.id).length > 0 ? <img className={[styles.thumbnail, styles.bigger].join(' ')} src={item.avatar_path} alt={`${item.name} avatar`} /> : <div className={[styles.thumbnail, styles.bigger].join(' ')}><div>No image</div></div>
-                    }
-                    <h3 style={{ color: 'black' }}>Добавить аватар:</h3>
-                    <input placeholder='URL до файла' onChange={e => setPath(e.target.value)} value={path} />
-                    <button type='submit' disabled={path.trim() === ''}>CREATE</button>
+                <form onSubmit={submitHandler} className={styles.avatarForm}>
+                    <div className={styles.avatarPreview}>
+                        {item.avatar_path ? (
+                            <img
+                                src={item.avatar_path}
+                                alt={`${item.name} avatar`}
+                                className={styles.avatarImage}
+                            />
+                        ) : (
+                            <div className={styles.avatarPlaceholder}>
+                                <span>No image</span>
+                            </div>
+                        )}
+                    </div>
+
+                    <h3 className={styles.formTitle}>Добавить аватар</h3>
+
+                    <div className={styles.inputGroup}>
+                        <input
+                            type="text"
+                            placeholder="Введите URL изображения"
+                            className={styles.urlInput}
+                            onChange={e => setPath(e.target.value)}
+                            value={path}
+                        />
+                        <button
+                            type="submit"
+                            className={styles.submitButton}
+                            disabled={path.trim() === ''}
+                        >
+                            Сохранить
+                        </button>
+                    </div>
                 </form>
             </Modal>
         </div>
