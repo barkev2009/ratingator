@@ -1,8 +1,12 @@
-require('dotenv').config();
+const path = require('path');
+if (process.env.NODE_ENV === 'development') {
+    require('dotenv').config({ path: path.resolve(__dirname, '.env.development') });
+} else {
+    require('dotenv').config({ path: path.resolve(__dirname, '.env.production') });
+}
 const http = require('http');
 const express = require('express');
 const cors = require('cors');
-const path = require('path');
 const fileUpload = require('express-fileupload');
 const models = require('./models/models')
 
@@ -39,7 +43,7 @@ const start = async () => {
     try {
         await sequelize.authenticate();
         await sequelize.sync();
-        server.listen(PORT, () => console.log(`Server started on port ${PORT}`))
+        server.listen(PORT, '0.0.0.0', () => console.log(`Server started on port ${PORT}`))
     } catch (err) {
         console.error(err)
     }

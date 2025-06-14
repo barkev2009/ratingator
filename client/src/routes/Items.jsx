@@ -13,6 +13,7 @@ import { getTags } from '../reducers/tags';
 import CreateTagButton from '../components/CreateTagButton';
 import CollectionTags from '../containers/CollectionTags';
 import Error from '../common/Error';
+import { useRef } from 'react';
 
 const Items = () => {
 
@@ -20,7 +21,7 @@ const Items = () => {
 
     const location = useLocation();
     const dispatch = useDispatch();
-    const collectionId = location.pathname.split('/')[2];
+    const collectionId = useRef(location.pathname.split('/').slice(-1)[0]);
     const initialItems = useSelector(state => state.items.data);
     const userId = useSelector(state => state.user.user.id);
     const error = useSelector(state => state.items.error);
@@ -35,7 +36,7 @@ const Items = () => {
     const submitHandler = (e) => {
         e.preventDefault();
         if (name !== '') {
-            dispatch(createItem({ name, collectionId }));
+            dispatch(createItem({ name, collectionId: collectionId.current }));
             setName('');
         }
     }
@@ -46,14 +47,14 @@ const Items = () => {
         dispatch(sortByRatingDispatch(sortByRating === 'true' ? 'false' : 'true'));
         setSortByRating(sortByRating === 'true' ? 'false' : 'true');
         dispatch(clearItems());
-        dispatch(getItems({ collectionId, sortByRating: sortByRating === 'true' ? 'false' : 'true' }));
+        dispatch(getItems({ collectionId: collectionId.current, sortByRating: sortByRating === 'true' ? 'false' : 'true' }));
     }
 
     useEffect(
         () => {
-            if (collectionId) {
-                dispatch(getItems({ collectionId, sortByRating }));
-                dispatch(getAllItems({ collectionId }));
+            if (collectionId.current) {
+                dispatch(getItems({ collectionId: collectionId.current, sortByRating }));
+                dispatch(getAllItems({ collectionId: collectionId.current }));
             }
         }, []
     );
@@ -74,11 +75,11 @@ const Items = () => {
     );
     useEffect(
         () => {
-            if (collectionId) {
-                dispatch(getAttachments({ collectionId }));
-                dispatch(getTags({ collectionId }));
+            if (collectionId.current) {
+                dispatch(getAttachments({ collectionId: collectionId.current }));
+                dispatch(getTags({ collectionId: collectionId.current }));
             }
-        }, [collectionId]
+        }, [collectionId.current]
     );
     useEffect(
         () => {

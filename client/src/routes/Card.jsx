@@ -12,14 +12,15 @@ import Carousel from '../components/Carousel';
 import { getAttachments } from '../reducers/attachments';
 import AddAttachment from '../components/AddAttachment';
 import Rating from '../components/Rating';
+import { useRef } from 'react';
 
 const Card = () => {
     useSetCookie();
 
     const dispatch = useDispatch();
     const location = useLocation();
-    const itemId = location.pathname.split('/')[2];
-    const itemSelector = useSelector(state => state.items.data.filter(i => i.id === itemId)[0]);
+    const itemId = useRef(location.pathname.split('/').slice(-1)[0]);
+    const itemSelector = useSelector(state => state.items.data.filter(i => i.id === itemId.current)[0]);
     const [item, setItem] = useState({});
     const [name, setName] = useState('');
     const [disabled, setDisabled] = useState(true);
@@ -29,14 +30,14 @@ const Card = () => {
         if (!name.trim()) {
             setName(item.name);
         } else {
-            dispatch(editItem({ id: itemId, name: name.trim() }));
+            dispatch(editItem({ id: itemId.current, name: name.trim() }));
             setDisabled(true);
         }
     };
 
     useEffect(() => {
-        if (itemId) {
-            dispatch(getItem({ id: itemId }));
+        if (itemId.current) {
+            dispatch(getItem({ id: itemId.current }));
         }
     }, [itemId, dispatch]);
 
@@ -61,7 +62,7 @@ const Card = () => {
 
             <div className={styles.card}>
                 <div className={styles.carouselSection}>
-                    <Carousel itemId={itemId} />
+                    <Carousel itemId={itemId.current} />
                 </div>
 
                 <div className={styles.detailsSection}>
@@ -84,7 +85,7 @@ const Card = () => {
                     </form>
 
                     <div className={styles.controls}>
-                        <AddAttachment itemId={itemId} />
+                        <AddAttachment itemId={itemId.current} />
                         <Rating item={item} />
                     </div>
 

@@ -1,0 +1,11 @@
+{
+    "apps": [
+        {
+            "name": "ratingator-server",
+            "script": "index.js",
+            "env": {
+                "PORT": 5003
+            }
+        }
+    ]
+}

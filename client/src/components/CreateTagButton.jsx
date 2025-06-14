@@ -4,6 +4,7 @@ import styles from '../css/CreateTagButton.module.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { createTag } from '../reducers/tags';
 import { useLocation } from 'react-router-dom';
+import { useRef } from 'react';
 
 const CreateTagButton = ({ className }) => {
   const [active, setActive] = useState(false);
@@ -11,12 +12,12 @@ const CreateTagButton = ({ className }) => {
   const dispatch = useDispatch();
   const tags = useSelector(state => state.tags.data);
   const location = useLocation();
-  const collectionId = location.pathname.split('/')[2];
+  const collectionId = useRef(location.pathname.split('/').slice(-1)[0]);
 
   const clickHandler = (e) => {
     e.preventDefault();
     if (name.trim() !== '' && !tags.some(tag => tag.name === name.trim())) {
-      dispatch(createTag({ name: name.trim(), collectionId }));
+      dispatch(createTag({ name: name.trim(), collectionId: collectionId.current }));
       setActive(false);
       setName('');
     }

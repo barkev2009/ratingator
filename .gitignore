@@ -1,8 +1,13 @@
 */node_modules
 */.env
+*/.env.development
+*/.env.production
 config
+server/server.tar.gz
 *$db.drawio*
 */static
 node_modules
 refresh*
 package*
+scdr.sh
+ssdr.sh
