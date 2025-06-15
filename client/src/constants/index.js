@@ -1,4 +1,4 @@
-const PUBLIC_URL = '/ratingator'
+const PUBLIC_URL = '/apps/ratingator'
 
 export const AUTH_ROUTE = PUBLIC_URL + '/auth';
 export const REGISTER_ROUTE = PUBLIC_URL + '/register';
